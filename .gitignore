@@ -4,3 +4,6 @@
 UrbanSound8K_test.pkl
 
 UrbanSound8K_train.pkl
+.vscode
+DLCoursework.code-workspace
+__pycache__
