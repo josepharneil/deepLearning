@@ -10,12 +10,32 @@ from torchvision import transforms
 
 from dataset import UrbanSound8KDataset
 
-train_loader = torch.utils.data.DataLoader(
+train_loader_LMC = torch.utils.data.DataLoader(
       UrbanSound8KDataset('UrbanSound8K_train.pkl', 'LMC'),
       batch_size=32, shuffle=True,
       num_workers=8, pin_memory=True)
 
-val_loader = torch.utils.data.DataLoader(
+test_loader_LMC = torch.utils.data.DataLoader(
      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
+     batch_size=32, shuffle=False,
+     num_workers=8, pin_memory=True)
+
+train_loader_MC = torch.utils.data.DataLoader(
+      UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
+      batch_size=32, shuffle=True,
+      num_workers=8, pin_memory=True)
+
+test_loader_MC = torch.utils.data.DataLoader(
+     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MC'),
+     batch_size=32, shuffle=False,
+     num_workers=8, pin_memory=True)
+
+train_loader_MLMC = torch.utils.data.DataLoader(
+      UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MLMC'),
+      batch_size=32, shuffle=True,
+      num_workers=8, pin_memory=True)
+
+test_loader_MLMC = torch.utils.data.DataLoader(
+     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
      batch_size=32, shuffle=False,
      num_workers=8, pin_memory=True)
