@@ -18,10 +18,10 @@ train_loader_LMC = torch.utils.data.DataLoader(
     batch_size=32, shuffle=True,
     num_workers=8, pin_memory=True)
 
-# test_loader_LMC = torch.utils.data.DataLoader(
-#      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
-#      batch_size=32, shuffle=False,
-#      num_workers=8, pin_memory=True)
+test_loader_LMC = torch.utils.data.DataLoader(
+     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
+     batch_size=32, shuffle=False,
+     num_workers=8, pin_memory=True)
 
 # train_loader_MC = torch.utils.data.DataLoader(
 #       UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
@@ -162,7 +162,7 @@ item = next(iter(train_loader_LMC))
 print(item[0].shape)
 print(model(item[0]).shape)
 
-optimizer = optim.SGD(
+optimiser = optim.SGD(
     params=model.parameters(),
     lr=0.001,
     momentum = 0.9,
@@ -173,6 +173,20 @@ criterion = nn.CrossEntropyLoss()
 
 
 
+
+#####TRAINING LOOP#######
+for epoch in range(0,1):
+    #for each batch (input is 32 images)
+    for i,(input,target,filenames) in enumerate(train_loader_LMC):
+        #training loop for single batch
+        logits = model(input)
+        loss = criterion(logits,target)
+        print(i,loss)
+        loss.backward()
+        optimiser.step()
+        optimiser.zero_grad()
+
+# For each batch- ignore filenames, this is only useful in testing to combine audio segments
 #for i,(input,target,filename) in enumerate(train_loader):
 #   training code
 
@@ -197,5 +211,7 @@ criterion = nn.CrossEntropyLoss()
 # 2.) check location of dropout layers
 # 3.) fully connected layers? paper says one layer, seems to be 2? if 1 layer, how can the output of conv layers be flatened to 1024????
 # 4.) what L2 regularization value to use?
+# 5.) how do you do the audio segment combination in testing: how de we interpret the filenames thing?
+# 6.) How many epochs?
 
 #endregion notes
