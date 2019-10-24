@@ -3,7 +3,7 @@ import torch.backends.cudnn
 import numpy as np
 from torch import nn, optim
 from torch.nn import functional as F
-from torch.optim.optimizer import Optimizer
+from torch.optim.optimizer import Optimizer 
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
@@ -12,6 +12,7 @@ from dataset import UrbanSound8KDataset
 
 device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
 
+#region data
 train_loader_LMC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_train.pkl', 'LMC'),
     batch_size=32, shuffle=True,
@@ -41,6 +42,8 @@ train_loader_LMC = torch.utils.data.DataLoader(
 #      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
 #      batch_size=32, shuffle=False,
 #      num_workers=8, pin_memory=True)
+#endregion data
+
 
 class LMC_Net(nn.Module):
     #Initialisation method
@@ -151,28 +154,48 @@ class LMC_Net(nn.Module):
         ##6
         x = self.dropout13(x)
         x = self.fc14(x)
-        x = F.softmax(x,dim=1)
+        #x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
+model = LMC_Net().to(device)
+item = next(iter(train_loader_LMC))
+print(item[0].shape)
+print(model(item[0]).shape)
 
+optimizer = optim.SGD(
+    params=model.parameters(),
+    lr=0.001,
+    momentum = 0.9,
+    weight_decay=1e-5#L2 regularization -> what value????
+    )
+
+criterion = nn.CrossEntropyLoss()
+
+
+
+#for i,(input,target,filename) in enumerate(train_loader):
+#   training code
+
+#for i, (input,target,filename) in enumerate(val_loader):
+#   validation code
+
+
+
+
+#region notes
 
 ###optimizer: SGD; L2 reg; learn rate 0.001; momentum 0.9
 ###loss function: cross entropy
 #nb: don't use dropout in testing
 
-
-model = LMC_Net()
-item = next(iter(train_loader_LMC))
-print(item[0].shape)
-print(model(item[0]).shape)
-
 #result = LMC_model().to(device)
 #to instantiate: LMC_model = LMC_Net()
 #to do forward pass: output = LMC_model(input)
-
-
 
 #####QUESTIONS:
 # 1.) stride and padding for the convolutional layers: e.g. how is the image size maintained across the 
 # 2.) check location of dropout layers
 # 3.) fully connected layers? paper says one layer, seems to be 2? if 1 layer, how can the output of conv layers be flatened to 1024????
+# 4.) what L2 regularization value to use?
+
+#endregion notes
