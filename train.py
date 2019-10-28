@@ -10,13 +10,18 @@ from torchvision import transforms
 
 from dataset import UrbanSound8KDataset
 
-device = torch.device('cuda:0' if torch.cuda.is_available() else "cpu")
+summary_writer = SummaryWriter('logs',flush_secs=5)
+
+print("cuda is available: ", torch.cuda.is_available())
+device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
 #region data
 train_loader_LMC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_train.pkl', 'LMC'),
     batch_size=32, shuffle=True,
     num_workers=8, pin_memory=True)
+
+#train_loader_LMC.input.to(device)
 
 test_loader_LMC = torch.utils.data.DataLoader(
      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
@@ -154,13 +159,20 @@ class LMC_Net(nn.Module):
         ##6
         x = self.dropout13(x)
         x = self.fc14(x)
-        x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
+        # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
+def accuracy(probs, targets):
+    correct = (torch.argmax(probs,1) == targets).sum()
+    accuracy = float(correct)/targets.shape[0]
+    return accuracy
+
+
 model = LMC_Net().to(device)
-item = next(iter(train_loader_LMC))
-print(item[0].shape)
-print(model(item[0]).shape)
+# item = next(iter(train_loader_LMC))
+# # item.to(device)
+# print(item[0].shape)
+# print(model(item[0]).shape)
 print()
 
 optimiser = optim.SGD(
@@ -173,19 +185,32 @@ optimiser = optim.SGD(
 criterion = nn.CrossEntropyLoss()
 
 
-
-
 #####TRAINING LOOP#######
-for epoch in range(0,1):
+for epoch in range(0,8):
+    print(epoch)
+    myLoss = 0
+    myAcc = 0
     #for each batch (input is 32 images)
     for i,(input,target,filenames) in enumerate(train_loader_LMC):
         #training loop for single batch
+        # print(input.is_cuda)
+        input = input.to(device)
+        target = target.to(device)
         logits = model(input)
         loss = criterion(logits,target)
-        print(i,loss)
+        myLoss = loss.item()
+        # print("Epoch:",epoch,"Batch:",i,"  Loss: ",loss.item())
         loss.backward()
         optimiser.step()
         optimiser.zero_grad()
+
+        train_accuracy = accuracy(logits, target)*100
+        summary_writer.add_scalar('loss/train', loss.item(), epoch)
+        summary_writer.add_scalar('accuraccy/train', train_accuracy, epoch)
+        myAcc = train_accuracy
+
+    print(myLoss)
+    print(myAcc)
 
 # For each batch- ignore filenames, this is only useful in testing to combine audio segments
 #for i,(input,target,filename) in enumerate(train_loader):
@@ -194,6 +219,7 @@ for epoch in range(0,1):
 #for i, (input,target,filename) in enumerate(val_loader):
 #   validation code
 
+summary_writer.close()
 
 
 
