@@ -57,8 +57,8 @@ class LMC_Net(nn.Module):
             in_channels=1,
             out_channels=32,
             kernel_size=(3,3),
-            #stride=(2,2)
-            padding = 1  ##BULLSHIT
+            # stride=(2,2),
+            padding = 1  ##RUBBISH
         )
 
         ##### randomly initialise params??????
@@ -75,7 +75,7 @@ class LMC_Net(nn.Module):
             out_channels = 32,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 2  ##BULLSHIT
+            padding = 1  ##RUBBISH
         )
 
         self.norm5 = nn.BatchNorm2d(num_features = 32)
@@ -83,7 +83,7 @@ class LMC_Net(nn.Module):
         #relu
 
         #maxpooling
-        self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
+        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
         self.conv7 = nn.Conv2d(
@@ -91,7 +91,7 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 2  ##BULLSHIT
+            padding = 1 ##RUBBISH
         )
 
         self.norm8 = nn.BatchNorm2d(num_features = 64)
@@ -106,7 +106,7 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 0  ##BULLSHIT
+            padding = 1  ##RUBBISH
         )
         
         self.norm11 = nn.BatchNorm2d(num_features = 64)
@@ -154,13 +154,14 @@ class LMC_Net(nn.Module):
         ##6
         x = self.dropout13(x)
         x = self.fc14(x)
-        #x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
+        x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
 model = LMC_Net().to(device)
 item = next(iter(train_loader_LMC))
 print(item[0].shape)
 print(model(item[0]).shape)
+print()
 
 optimiser = optim.SGD(
     params=model.parameters(),
@@ -210,7 +211,7 @@ for epoch in range(0,1):
 # 1.) stride and padding for the convolutional layers: e.g. how is the image size maintained across the 
 # 2.) check location of dropout layers
 # 3.) fully connected layers? paper says one layer, seems to be 2? if 1 layer, how can the output of conv layers be flatened to 1024????
-# 4.) what L2 regularization value to use?
+# 4.) what L2 regularization value to use? - use common values
 # 5.) how do you do the audio segment combination in testing: how de we interpret the filenames thing?
 # 6.) How many epochs?
 
