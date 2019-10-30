@@ -179,122 +179,245 @@ model = LMC_Net().to(device)
 # # item.to(device)
 # print(item[0].shape)
 # print(model(item[0]).shape)
-print()
-
-optimiser = optim.SGD(
-    params=model.parameters(),
-    lr=0.001,
-    momentum = 0.9,
-    weight_decay=1e-5#L2 regularization -> what value????
-    )
-
-criterion = nn.CrossEntropyLoss()
+# print()
 
 
-#####TRAINING LOOP#######
-for epoch in range(0,8):
-    print(epoch)
-    myLoss = 0
-    myAcc = 0
-    #for each batch (input is 32 images)
-    for i,(input,target,filenames) in enumerate(train_loader_LMC):
-        #training loop for single batch
-        # print(input.is_cuda)
-        input = input.to(device)
-        target = target.to(device)
-        logits = model(input)
-        loss = criterion(logits,target)
-        myLoss = loss.item()
-        # print("Epoch:",epoch,"Batch:",i,"  Loss: ",loss.item())
-        loss.backward()
-        optimiser.step()
-        optimiser.zero_grad()
+def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, momentum_=0.9, weightDecay=1e-5):
+    optimiser = optim.SGD(
+        params=model.parameters(),
+        lr=learningRate,
+        momentum = momentum_,
+        weight_decay=weightDecay#L2 regularization -> what value????
+        )
 
-        train_accuracy = accuracy(logits, target)*100
-        summary_writer.add_scalar('loss/train', loss.item(), epoch)
-        summary_writer.add_scalar('accuracy/train', train_accuracy, epoch)
-        myAcc = train_accuracy
+    criterion = nn.CrossEntropyLoss()
 
-    print(myLoss)
-    print(myAcc)
 
-    #####TESTING LOOP#######
-    # Turn off dropout and batchnorm layers
-    model.eval() 
-
-    numTestBatch = len(test_loader_LMC)
-    totalLoss    = 0
-
-    logitFilenameDictionary = {}
-    targetFilenameDictionary = {}
-
-    # Don't need to track grad
-    with torch.no_grad():
-        # For each batch in test set
-        for i,(input,target,filenames) in enumerate(test_loader_LMC):
-            input  = input.to(device)
+    #####TRAINING LOOP#######
+    for epoch in range(0,numEpochs):
+        print(epoch)
+        myLoss = 0
+        myAcc = 0
+        #for each batch (input is 32 images)
+        for i,(input,target,filenames) in enumerate(trainingData):
+            #training loop for single batch
+            # print(input.is_cuda)
+            input = input.to(device)
             target = target.to(device)
             logits = model(input)
-            loss = criterion(logits,target) 
-            totalLoss += loss
+            loss = criterion(logits,target)
+            myLoss = loss.item()
+            # print("Epoch:",epoch,"Batch:",i,"  Loss: ",loss.item())
+            loss.backward()
+            optimiser.step()
+            optimiser.zero_grad()
 
-            #Construct two dictionaries: 
-            #   logitFilenameDictionary:  map filename -> all logits for this filename, 
-            #   targetFilenameDictionary: map filename -> target
+            train_accuracy = accuracy(logits, target)*100
+            summary_writer.add_scalar('loss/train', loss.item(), epoch)
+            summary_writer.add_scalar('accuracy/train', train_accuracy, epoch)
+            myAcc = train_accuracy
+
+        print(myLoss)
+        print(myAcc)
+
+        #####TESTING LOOP#######
+        # Turn off dropout and batchnorm layers
+        model.eval() 
+
+        numTestBatch = len(testData)
+        totalLoss    = 0
+
+        logitFilenameDictionary = {}
+        targetFilenameDictionary = {}
+
+        # Don't need to track grad
+        with torch.no_grad():
+            # For each batch in test set
+            for i,(input,target,filenames) in enumerate(testData):
+                input  = input.to(device)
+                target = target.to(device)
+                logits = model(input)
+                loss = criterion(logits,target) 
+                totalLoss += loss
+
+                #Construct two dictionaries: 
+                #   logitFilenameDictionary:  map filename -> all logits for this filename, 
+                #   targetFilenameDictionary: map filename -> target
+                
+                #for each image
+                for j in range(0,len(filenames)):
+                    #check if image's filename already exists in the logit dictionary as a key
+                    if filenames[j] in logitFilenameDictionary:
+                        # if it does: append logits (one list of 10 values) for this image
+                        logitFilenameDictionary[filenames[j]].append(logits[j])
+                    else:
+                        #otherwise, create new key, and append these logits
+                        logitFilenameDictionary[filenames[j]] = []
+                        logitFilenameDictionary[filenames[j]].append(logits[j])
+
+                    #check if image's filename already exists in the target dictionary
+                    if filenames[j] not in targetFilenameDictionary:
+                        #associate filename to target
+                        targetFilenameDictionary[filenames[j]] = target[j]
+                
+        #average test loss for this epoch
+        averageLoss = float(totalLoss) / float(numTestBatch)
+        summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
+
+        #calculating accuracy using the dictionaries
+        correctPredictions = 0
+        numberOfFiles = len(targetFilenameDictionary)
+
+        #Test accuracy for this epoch
+        #For each filename in the dictionary
+        for filename in logitFilenameDictionary:
+            logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
             
-            #for each image
-            for j in range(0,len(filenames)):
-                #check if image's filename already exists in the logit dictionary as a key
-                if filenames[j] in logitFilenameDictionary:
-                    # if it does: append logits (one list of 10 values) for this image
-                    logitFilenameDictionary[filenames[j]].append(logits[j])
-                else:
-                    #otherwise, create new key, and append these logits
-                    logitFilenameDictionary[filenames[j]] = []
-                    logitFilenameDictionary[filenames[j]].append(logits[j])
-
-                #check if image's filename already exists in the target dictionary
-                if filenames[j] not in targetFilenameDictionary:
-                    #associate filename to target
-                    targetFilenameDictionary[filenames[j]] = target[j]
+            #next few lines are to sum the logits for this filename, so that argmax can be called
+            #logits sum is the elementwise sum of logits 
+            logitsSum = torch.zeros(10).to(device)
+            for logits in logitsList:
+                logitsSum += logits
             
-    #average test loss for this epoch
-    averageLoss = float(totalLoss) / float(numTestBatch)
-    summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
-
-    #calculating accuracy using the dictionaries
-    correctPredictions = 0
-    numberOfFiles = len(targetFilenameDictionary)
-
-    #Test accuracy for this epoch
-    #For each filename in the dictionary
-    for filename in logitFilenameDictionary:
-        logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+            #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
+            if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
+                correctPredictions += 1
         
-        #next few lines are to sum the logits for this filename, so that argmax can be called
-        #logits sum is the elementwise sum of logits 
-        logitsSum = torch.zeros(10).to(device)
-        for logits in logitsList:
-            logitsSum += logits
+        #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
+        testAccuracy = float(correctPredictions)/float(numberOfFiles)
+        summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
+
+    summary_writer.close()
+
+
+
+
+
+###
+
+trainAndValidate(train_loader_LMC, test_loader_LMC, 20, 0.001, 0.9, 1e-5)
+
+
+
+
+
+
+################################################
+#region OldCode
+# optimiser = optim.SGD(
+#     params=model.parameters(),
+#     lr=0.001,
+#     momentum = 0.9,
+#     weight_decay=1e-5#L2 regularization -> what value????
+#     )
+
+# criterion = nn.CrossEntropyLoss()
+
+
+# #####TRAINING LOOP#######
+# for epoch in range(0,8):
+#     print(epoch)
+#     myLoss = 0
+#     myAcc = 0
+#     #for each batch (input is 32 images)
+#     for i,(input,target,filenames) in enumerate(train_loader_LMC):
+#         #training loop for single batch
+#         # print(input.is_cuda)
+#         input = input.to(device)
+#         target = target.to(device)
+#         logits = model(input)
+#         loss = criterion(logits,target)
+#         myLoss = loss.item()
+#         # print("Epoch:",epoch,"Batch:",i,"  Loss: ",loss.item())
+#         loss.backward()
+#         optimiser.step()
+#         optimiser.zero_grad()
+
+#         train_accuracy = accuracy(logits, target)*100
+#         summary_writer.add_scalar('loss/train', loss.item(), epoch)
+#         summary_writer.add_scalar('accuracy/train', train_accuracy, epoch)
+#         myAcc = train_accuracy
+
+#     print(myLoss)
+#     print(myAcc)
+
+#     #####TESTING LOOP#######
+#     # Turn off dropout and batchnorm layers
+#     model.eval() 
+
+#     numTestBatch = len(test_loader_LMC)
+#     totalLoss    = 0
+
+#     logitFilenameDictionary = {}
+#     targetFilenameDictionary = {}
+
+#     # Don't need to track grad
+#     with torch.no_grad():
+#         # For each batch in test set
+#         for i,(input,target,filenames) in enumerate(test_loader_LMC):
+#             input  = input.to(device)
+#             target = target.to(device)
+#             logits = model(input)
+#             loss = criterion(logits,target) 
+#             totalLoss += loss
+
+#             #Construct two dictionaries: 
+#             #   logitFilenameDictionary:  map filename -> all logits for this filename, 
+#             #   targetFilenameDictionary: map filename -> target
+            
+#             #for each image
+#             for j in range(0,len(filenames)):
+#                 #check if image's filename already exists in the logit dictionary as a key
+#                 if filenames[j] in logitFilenameDictionary:
+#                     # if it does: append logits (one list of 10 values) for this image
+#                     logitFilenameDictionary[filenames[j]].append(logits[j])
+#                 else:
+#                     #otherwise, create new key, and append these logits
+#                     logitFilenameDictionary[filenames[j]] = []
+#                     logitFilenameDictionary[filenames[j]].append(logits[j])
+
+#                 #check if image's filename already exists in the target dictionary
+#                 if filenames[j] not in targetFilenameDictionary:
+#                     #associate filename to target
+#                     targetFilenameDictionary[filenames[j]] = target[j]
+            
+#     #average test loss for this epoch
+#     averageLoss = float(totalLoss) / float(numTestBatch)
+#     summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
+
+#     #calculating accuracy using the dictionaries
+#     correctPredictions = 0
+#     numberOfFiles = len(targetFilenameDictionary)
+
+#     #Test accuracy for this epoch
+#     #For each filename in the dictionary
+#     for filename in logitFilenameDictionary:
+#         logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
         
-        #if the overall prediction (based on the summed logits) for this file is correct, increment correcyt predictions    
-        if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
-            correctPredictions += 1
+#         #next few lines are to sum the logits for this filename, so that argmax can be called
+#         #logits sum is the elementwise sum of logits 
+#         logitsSum = torch.zeros(10).to(device)
+#         for logits in logitsList:
+#             logitsSum += logits
+        
+#         #if the overall prediction (based on the summed logits) for this file is correct, increment correcyt predictions    
+#         if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
+#             correctPredictions += 1
     
-    #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
-    testAccuracy = float(correctPredictions)/float(numberOfFiles)
-    summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
+#     #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
+#     testAccuracy = float(correctPredictions)/float(numberOfFiles)
+#     summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
             
 
-# For each batch- ignore filenames, this is only useful in testing to combine audio segments
-#for i,(input,target,filename) in enumerate(train_loader):
-#   training code
+# # For each batch- ignore filenames, this is only useful in testing to combine audio segments
+# #for i,(input,target,filename) in enumerate(train_loader):
+# #   training code
 
-#for i, (input,target,filename) in enumerate(val_loader):
-#   validation code
+# #for i, (input,target,filename) in enumerate(val_loader):
+# #   validation code
 
-summary_writer.close()
-
+# summary_writer.close()
+#endregion OldCode
 
 
 #region notes
