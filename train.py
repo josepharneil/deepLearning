@@ -193,6 +193,8 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
     criterion = nn.CrossEntropyLoss()
 
 
+
+
     #####TRAINING LOOP#######
     for epoch in range(0,numEpochs):
         print(epoch)
@@ -267,6 +269,13 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
         #calculating accuracy using the dictionaries
         correctPredictions = 0
         numberOfFiles = len(targetFilenameDictionary)
+        correctPreds = torch.zeros(10).to(device)
+        noFiles = torch.zeros(10).to(device)
+        # for each file
+        for keyFilename in targetFilenameDictionary:
+            #add up number of filenames in each class
+            noFiles[targetFilenameDictionary[keyFilename]] += 1
+
 
         #Test accuracy for this epoch
         #For each filename in the dictionary
@@ -282,10 +291,15 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
             #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
             if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
                 correctPredictions += 1
+
+                correctPreds[targetFilenameDictionary[filename]] += 1
         
         #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
         testAccuracy = float(correctPredictions)/float(numberOfFiles)
+        testAcc = torch.div(correctPreds, noFiles)
         summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
+
+        print(testAcc)
 
     summary_writer.close()
 
