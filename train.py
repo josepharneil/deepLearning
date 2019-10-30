@@ -24,9 +24,13 @@ train_loader_LMC = torch.utils.data.DataLoader(
 #train_loader_LMC.input.to(device)
 
 test_loader_LMC = torch.utils.data.DataLoader(
-     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
-     batch_size=32, shuffle=False,
-     num_workers=8, pin_memory=True)
+    UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
+    batch_size=32, shuffle=False,
+    num_workers=8, pin_memory=True)
+
+# print(len(test_loader_LMC))
+# for i,(input,target,filenames) in enumerate(test_loader_LMC):
+    # print(i)
 
 # train_loader_MC = torch.utils.data.DataLoader(
 #       UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
@@ -49,6 +53,8 @@ test_loader_LMC = torch.utils.data.DataLoader(
 #      num_workers=8, pin_memory=True)
 #endregion data
 
+# for i,(input,target,filenames) in enumerate(train_loader_LMC):
+    # print(i)
 
 class LMC_Net(nn.Module):
     #Initialisation method
@@ -162,8 +168,8 @@ class LMC_Net(nn.Module):
         # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
-def accuracy(probs, targets):
-    correct = (torch.argmax(probs,1) == targets).sum()
+def accuracy(logits, targets):
+    correct = (torch.argmax(logits,1) == targets).sum()
     accuracy = float(correct)/targets.shape[0]
     return accuracy
 
@@ -206,11 +212,79 @@ for epoch in range(0,8):
 
         train_accuracy = accuracy(logits, target)*100
         summary_writer.add_scalar('loss/train', loss.item(), epoch)
-        summary_writer.add_scalar('accuraccy/train', train_accuracy, epoch)
+        summary_writer.add_scalar('accuracy/train', train_accuracy, epoch)
         myAcc = train_accuracy
 
     print(myLoss)
     print(myAcc)
+
+    #####TESTING LOOP#######
+    # Turn off dropout and batchnorm layers
+    model.eval() 
+
+    numTestBatch = len(test_loader_LMC)
+    totalLoss    = 0
+
+    logitFilenameDictionary = {}
+    targetFilenameDictionary = {}
+
+    # Don't need to track grad
+    with torch.no_grad():
+        # For each batch in test set
+        for i,(input,target,filenames) in enumerate(test_loader_LMC):
+            input  = input.to(device)
+            target = target.to(device)
+            logits = model(input)
+            loss = criterion(logits,target) 
+            totalLoss += loss
+
+            #Construct two dictionaries: 
+            #   logitFilenameDictionary:  map filename -> all logits for this filename, 
+            #   targetFilenameDictionary: map filename -> target
+            
+            #for each image
+            for j in range(0,len(filenames)):
+                #check if image's filename already exists in the logit dictionary as a key
+                if filenames[j] in logitFilenameDictionary:
+                    # if it does: append logits (one list of 10 values) for this image
+                    logitFilenameDictionary[filenames[j]].append(logits[j])
+                else:
+                    #otherwise, create new key, and append these logits
+                    logitFilenameDictionary[filenames[j]] = []
+                    logitFilenameDictionary[filenames[j]].append(logits[j])
+
+                #check if image's filename already exists in the target dictionary
+                if filenames[j] not in targetFilenameDictionary:
+                    #associate filename to target
+                    targetFilenameDictionary[filenames[j]] = target[j]
+            
+    #average test loss for this epoch
+    averageLoss = float(totalLoss) / float(numTestBatch)
+    summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
+
+    #calculating accuracy using the dictionaries
+    correctPredictions = 0
+    numberOfFiles = len(targetFilenameDictionary)
+
+    #Test accuracy for this epoch
+    #For each filename in the dictionary
+    for filename in logitFilenameDictionary:
+        logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+        
+        #next few lines are to sum the logits for this filename, so that argmax can be called
+        #logits sum is the elementwise sum of logits 
+        logitsSum = torch.zeros(10).to(device)
+        for logits in logitsList:
+            logitsSum += logits
+        
+        #if the overall prediction (based on the summed logits) for this file is correct, increment correcyt predictions    
+        if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
+            correctPredictions += 1
+    
+    #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
+    testAccuracy = float(correctPredictions)/float(numberOfFiles)
+    summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
+            
 
 # For each batch- ignore filenames, this is only useful in testing to combine audio segments
 #for i,(input,target,filename) in enumerate(train_loader):
@@ -240,5 +314,6 @@ summary_writer.close()
 # 4.) what L2 regularization value to use? - use common values
 # 5.) how do you do the audio segment combination in testing: how de we interpret the filenames thing?
 # 6.) How many epochs?
+# 7.) initialise layer?
 
 #endregion notes
