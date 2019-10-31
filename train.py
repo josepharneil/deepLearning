@@ -408,44 +408,44 @@ def trainAndValidate(model, trainingData, testData, numEpochs=8, learningRate=0.
                         #associate filename to target
                         targetFilenameDictionary[filenames[j]] = target[j]
                 
-        #average test loss for this epoch
-        averageLoss = float(totalLoss) / float(numTestBatch)
-        summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
+            #average test loss for this epoch
+            averageLoss = float(totalLoss) / float(numTestBatch)
+            summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
 
-        #calculating accuracy using the dictionaries
-        correctPredictions = 0
-        numberOfFiles = len(targetFilenameDictionary)
-        correctPredsPerClass = torch.zeros(10).to(device)
-        noFilesPerClass = torch.zeros(10).to(device)
-        # count the number of files per class
-        for keyFilename in targetFilenameDictionary:
-            #add up number of filenames in each class
-            noFilesPerClass[targetFilenameDictionary[keyFilename]] += 1
+            #calculating accuracy using the dictionaries
+            correctPredictions = 0
+            numberOfFiles = len(targetFilenameDictionary)
+            correctPredsPerClass = torch.zeros(10).to(device)
+            noFilesPerClass = torch.zeros(10).to(device)
+            # count the number of files per class
+            for keyFilename in targetFilenameDictionary:
+                #add up number of filenames in each class
+                noFilesPerClass[targetFilenameDictionary[keyFilename]] += 1
 
 
-        #Test accuracy for this epoch
-        #For each filename in the dictionary
-        for filename in logitFilenameDictionary:
-            logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+            #Test accuracy for this epoch
+            #For each filename in the dictionary
+            for filename in logitFilenameDictionary:
+                logitsList = logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+                
+                #next few lines are to sum the logits for this filename, so that argmax can be called
+                #logits sum is the elementwise sum of logits 
+                logitsSum = torch.zeros(10).to(device)
+                for logits in logitsList:
+                    logitsSum += logits
+                
+                #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
+                if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
+                    correctPredictions += 1
+
+                    correctPredsPerClass[targetFilenameDictionary[filename]] += 1
             
-            #next few lines are to sum the logits for this filename, so that argmax can be called
-            #logits sum is the elementwise sum of logits 
-            logitsSum = torch.zeros(10).to(device)
-            for logits in logitsList:
-                logitsSum += logits
-            
-            #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
-            if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
-                correctPredictions += 1
+            #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
+            testAccuracy = float(correctPredictions)/float(numberOfFiles)
+            testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
+            summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
 
-                correctPredsPerClass[targetFilenameDictionary[filename]] += 1
-        
-        #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
-        testAccuracy = float(correctPredictions)/float(numberOfFiles)
-        testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
-        summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
-
-        print(testAccPerClass)
+            print(testAccPerClass)
 
     summary_writer.close()
 
@@ -467,7 +467,6 @@ trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, 8, 0.001, 0.9,
 # print(item[0].shape)
 # print(model(item[0]).shape)
 # print()
-
 
 #endregion Models
 
