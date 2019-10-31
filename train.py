@@ -334,6 +334,7 @@ def trainAndValidate(model,
                     testData, 
                     logitFilenameDictionary,
                     targetFilenameDictionary,
+                    tensorboardDatasetName,
                     numEpochs=8, 
                     learningRate=0.001, 
                     momentum_=0.9, 
@@ -369,8 +370,9 @@ def trainAndValidate(model,
             optimiser.zero_grad()
 
             train_accuracy = accuracy(logits, target)*100
-            summary_writer.add_scalar('loss/train', loss.item(), epoch)
-            summary_writer.add_scalar('accuracy/train', train_accuracy, epoch)
+            
+            summary_writer.add_scalar(('loss/train-'+tensorboardDatasetName), loss.item(), epoch)
+            summary_writer.add_scalar(('accuracy/train-'+tensorboardDatasetName), train_accuracy, epoch)
             myAcc = train_accuracy
 
         print(myLoss)
@@ -419,7 +421,7 @@ def trainAndValidate(model,
                 
             #average test loss for this epoch
             averageLoss = float(totalLoss) / float(numTestBatch)
-            summary_writer.add_scalar('loss/test (average loss)', averageLoss, epoch)
+            summary_writer.add_scalar(('loss/test-'+tensorboardDatasetName), averageLoss, epoch)
 
             #calculating accuracy using the dictionaries
             correctPredictions = 0
@@ -452,7 +454,7 @@ def trainAndValidate(model,
             #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
             testAccuracy = float(correctPredictions)/float(numberOfFiles)
             testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
-            summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
+            summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), testAccuracy, epoch)
 
             # print(testAccPerClass)
 
@@ -467,14 +469,14 @@ def trainAndValidate(model,
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 8, 0.001, 0.9, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
 
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 8, 0.001, 0.9, 1e-5)
 # print(MC_logitFilenameDictionary)
 # print(MC_targetFilenameDictionary)
 
@@ -545,7 +547,7 @@ TSCNN()
 # MLMC_logitFilenameDictionary = {}
 # MLMC_targetFilenameDictionary = {}
 # MLMC_model = MLMC_Net().to(device)
-# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',8, 0.001, 0.9, 1e-5)
 
 
 
