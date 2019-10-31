@@ -479,59 +479,68 @@ trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDict
 # print(MC_targetFilenameDictionary)
 
 
-#LMC Probs
-for filename in LMC_logitFilenameDictionary:
-    logitsList = LMC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
-    
-    #next few lines are to sum the logits for this filename, so that argmax can be called
-    #logits sum is the elementwise sum of logits 
-    logitsSum = torch.zeros(10).to(device)
-    for logits in logitsList:
-        logitsSum += logits
+def TSCNN():
+    #LMC Probs
+    for filename in LMC_logitFilenameDictionary:
+        logitsList = LMC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+        
+        #next few lines are to sum the logits for this filename, so that argmax can be called
+        #logits sum is the elementwise sum of logits 
+        logitsSum = torch.zeros(10).to(device)
+        for logits in logitsList:
+            logitsSum += logits
 
-    #Apply softmax
-    softmax = nn.Softmax()
-    probs = softmax(logitsSum)
+        #Apply softmax
+        softmax = nn.Softmax(dim=0)
+        probs = softmax(logitsSum)
 
-    #Store new probs in dictionary
-    LMC_logitFilenameDictionary[filename] = probs
+        #Store new probs in dictionary
+        LMC_logitFilenameDictionary[filename] = probs
 
-#MC Probs
-for filename in MC_logitFilenameDictionary:
-    logitsList = MC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
-    
-    #next few lines are to sum the logits for this filename, so that argmax can be called
-    #logits sum is the elementwise sum of logits 
-    logitsSum = torch.zeros(10).to(device)
-    for logits in logitsList:
-        logitsSum += logits
+    #MC Probs
+    for filename in MC_logitFilenameDictionary:
+        logitsList = MC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+        
+        #next few lines are to sum the logits for this filename, so that argmax can be called
+        #logits sum is the elementwise sum of logits 
+        logitsSum = torch.zeros(10).to(device)
+        for logits in logitsList:
+            logitsSum += logits
 
-    #Apply softmax
-    softmax = nn.Softmax()
-    probs = softmax(logitsSum)
+        #Apply softmax
+        softmax = nn.Softmax(dim=0)
+        probs = softmax(logitsSum)
 
-    #Store new probs in dictionary
-    MC_logitFilenameDictionary[filename] = probs
+        #Store new probs in dictionary
+        MC_logitFilenameDictionary[filename] = probs
 
-correctPredsPerClass = torch.zeros(10).to(device)
-noFilesPerClass = torch.zeros(10).to(device)
-#combination of probs
-#ASSUME FILENAMES ARE THE SAME IN EACH DICTIONARY
-for filename in LMC_logitFilenameDictionary:
-    #combine and argmax
-    pred = torch.argmax(MC_logitFilenameDictionary[filename] + LMC_logitFilenameDictionary[filename], dim=-1)
+    correctPredsPerClass = torch.zeros(10).to(device)
+    noFilesPerClass = torch.zeros(10).to(device)
+    #combination of probs
+    #ASSUME FILENAMES ARE THE SAME IN EACH DICTIONARY
+    for filename in LMC_logitFilenameDictionary:
+        #combine and argmax
+        pred = torch.argmax(MC_logitFilenameDictionary[filename] + LMC_logitFilenameDictionary[filename], dim=-1)
 
-    #count number of files per class
-    noFilesPerClass[LMC_targetFilenameDictionary[filename]] += 1
-    
-    #check for correct prediction
-    if (pred == LMC_targetFilenameDictionary[filename]):
-        #incr. class
-        correctPredsPerClass[LMC_targetFilenameDictionary[filename]] += 1
+        #count number of files per class
+        noFilesPerClass[LMC_targetFilenameDictionary[filename]] += 1
+        
+        #check for correct prediction
+        if (pred == LMC_targetFilenameDictionary[filename]):
+            #incr. class
+            correctPredsPerClass[LMC_targetFilenameDictionary[filename]] += 1
 
-testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
+    testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
 
-print(testAccPerClass)
+    print("Accuracy per class for TSCNN:",testAccPerClass)
+    averageAccuracy = (torch.sum(testAccPerClass) / 10)
+    print()
+    print("Average accuracy for TSCNN:",averageAccuracy.item())
+
+
+TSCNN()
+
+
 
 # MLMC_logitFilenameDictionary = {}
 # MLMC_targetFilenameDictionary = {}
