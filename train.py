@@ -329,7 +329,16 @@ def accuracy(logits, targets):
 # print()
 
 
-def trainAndValidate(model, trainingData, testData, numEpochs=8, learningRate=0.001, momentum_=0.9, weightDecay=1e-5):
+def trainAndValidate(model, 
+                    trainingData,
+                    testData, 
+                    logitFilenameDictionary,
+                    targetFilenameDictionary,
+                    numEpochs=8, 
+                    learningRate=0.001, 
+                    momentum_=0.9, 
+                    weightDecay=1e-5
+                    ):
     optimiser = optim.SGD(
         params=model.parameters(),
         lr=learningRate,
@@ -374,8 +383,8 @@ def trainAndValidate(model, trainingData, testData, numEpochs=8, learningRate=0.
         numTestBatch = len(testData)
         totalLoss    = 0
 
-        logitFilenameDictionary = {}
-        targetFilenameDictionary = {}
+        # logitFilenameDictionary = {}
+        # targetFilenameDictionary = {}
 
         #####TEST LOOP#######
         # Don't need to track grad
@@ -445,22 +454,91 @@ def trainAndValidate(model, trainingData, testData, numEpochs=8, learningRate=0.
             testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
             summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
 
-            print(testAccPerClass)
+            # print(testAccPerClass)
 
     summary_writer.close()
 
 
 
 
+
+
 #region Models
-# LMC_model = LMC_Net().to(device)
-# trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, 8, 0.001, 0.9, 1e-5)
+LMC_logitFilenameDictionary = {}
+LMC_targetFilenameDictionary = {}
+LMC_model = LMC_Net().to(device)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+# print(LMC_logitFilenameDictionary)
+# print(LMC_targetFilenameDictionary)
 
-# MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, 8, 0.001, 0.9, 1e-5)
+MC_logitFilenameDictionary = {}
+MC_targetFilenameDictionary = {}
+MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
+trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+# print(MC_logitFilenameDictionary)
+# print(MC_targetFilenameDictionary)
 
-MLMC_model = MLMC_Net().to(device)
-trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, 8, 0.001, 0.9, 1e-5)
+
+#LMC Probs
+for filename in LMC_logitFilenameDictionary:
+    logitsList = LMC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+    
+    #next few lines are to sum the logits for this filename, so that argmax can be called
+    #logits sum is the elementwise sum of logits 
+    logitsSum = torch.zeros(10).to(device)
+    for logits in logitsList:
+        logitsSum += logits
+
+    #Apply softmax
+    softmax = nn.Softmax()
+    probs = softmax(logitsSum)
+
+    #Store new probs in dictionary
+    LMC_logitFilenameDictionary[filename] = probs
+
+#MC Probs
+for filename in MC_logitFilenameDictionary:
+    logitsList = MC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
+    
+    #next few lines are to sum the logits for this filename, so that argmax can be called
+    #logits sum is the elementwise sum of logits 
+    logitsSum = torch.zeros(10).to(device)
+    for logits in logitsList:
+        logitsSum += logits
+
+    #Apply softmax
+    softmax = nn.Softmax()
+    probs = softmax(logitsSum)
+
+    #Store new probs in dictionary
+    MC_logitFilenameDictionary[filename] = probs
+
+correctPredsPerClass = torch.zeros(10).to(device)
+noFilesPerClass = torch.zeros(10).to(device)
+#combination of probs
+#ASSUME FILENAMES ARE THE SAME IN EACH DICTIONARY
+for filename in LMC_logitFilenameDictionary:
+    #combine and argmax
+    pred = torch.argmax(MC_logitFilenameDictionary[filename] + LMC_logitFilenameDictionary[filename], dim=-1)
+
+    #count number of files per class
+    noFilesPerClass[LMC_targetFilenameDictionary[filename]] += 1
+    
+    #check for correct prediction
+    if (pred == LMC_targetFilenameDictionary[filename]):
+        #incr. class
+        correctPredsPerClass[LMC_targetFilenameDictionary[filename]] += 1
+
+testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
+
+print(testAccPerClass)
+
+# MLMC_logitFilenameDictionary = {}
+# MLMC_targetFilenameDictionary = {}
+# MLMC_model = MLMC_Net().to(device)
+# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 8, 0.001, 0.9, 1e-5)
+
+
 
 # model = MLMC_Net().to(device)
 # item = next(iter(train_loader_MLMC))
