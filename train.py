@@ -32,29 +32,38 @@ test_loader_LMC = torch.utils.data.DataLoader(
 # for i,(input,target,filenames) in enumerate(test_loader_LMC):
     # print(i)
 
-# train_loader_MC = torch.utils.data.DataLoader(
-#       UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
-#       batch_size=32, shuffle=True,
-#       num_workers=8, pin_memory=True)
+train_loader_MC = torch.utils.data.DataLoader(
+    UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
+    batch_size=32, shuffle=True,
+    num_workers=8, pin_memory=True)
 
-# test_loader_MC = torch.utils.data.DataLoader(
-#      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MC'),
-#      batch_size=32, shuffle=False,
-#      num_workers=8, pin_memory=True)
+test_loader_MC = torch.utils.data.DataLoader(
+    UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MC'),
+    batch_size=32, shuffle=False,
+    num_workers=8, pin_memory=True)
 
-# train_loader_MLMC = torch.utils.data.DataLoader(
-#       UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MLMC'),
-#       batch_size=32, shuffle=True,
-#       num_workers=8, pin_memory=True)
+train_loader_MLMC = torch.utils.data.DataLoader(
+      UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MLMC'),
+      batch_size=32, shuffle=True,
+      num_workers=8, pin_memory=True)
 
-# test_loader_MLMC = torch.utils.data.DataLoader(
-#      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
-#      batch_size=32, shuffle=False,
-#      num_workers=8, pin_memory=True)
-#endregion data
+test_loader_MLMC = torch.utils.data.DataLoader(
+     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
+     batch_size=32, shuffle=False,
+     num_workers=8, pin_memory=True)
 
 # for i,(input,target,filenames) in enumerate(train_loader_LMC):
     # print(i)
+
+#endregion data
+
+def initialiseLayer(layer):
+    if hasattr(layer, "bias"):
+        nn.init.zeros_(layer.bias)
+    if hasattr(layer, "weight"):
+        nn.init.kaiming_normal_(layer.weight)
+
+#region NetworkClasses
 
 class LMC_Net(nn.Module):
     #Initialisation method
@@ -71,6 +80,8 @@ class LMC_Net(nn.Module):
             # stride=(2,2),
             padding = 1  ##RUBBISH
         )
+
+        initialiseLayer(self.conv1)
 
         ##### randomly initialise params??????
 
@@ -89,6 +100,8 @@ class LMC_Net(nn.Module):
             padding = 1  ##RUBBISH
         )
 
+        initialiseLayer(self.conv4)
+
         self.norm5 = nn.BatchNorm2d(num_features = 32)
         
         #relu
@@ -105,6 +118,8 @@ class LMC_Net(nn.Module):
             padding = 1 ##RUBBISH
         )
 
+        initialiseLayer(self.conv7)
+
         self.norm8 = nn.BatchNorm2d(num_features = 64)
 
         #relu
@@ -119,6 +134,8 @@ class LMC_Net(nn.Module):
             #stride = (2,2)
             padding = 1  ##RUBBISH
         )
+
+        initialiseLayer(self.conv10)
         
         self.norm11 = nn.BatchNorm2d(num_features = 64)
 
@@ -127,11 +144,15 @@ class LMC_Net(nn.Module):
         #[32, 64, 43, 21]
         ##5th layer
         self.fc12 = nn.Linear(in_features=57792,out_features=1024)
+
+        initialiseLayer(self.fc12)
         #Sigmoid
         
         #6th layer
         self.dropout13 = nn.Dropout(p=0.5)
         self.fc14 = nn.Linear(in_features=1024 ,out_features=10  )
+
+        initialiseLayer(self.fc14)
         #Softmax
 
     def forward(self,x):
@@ -168,13 +189,139 @@ class LMC_Net(nn.Module):
         # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
+class MLMC_Net(nn.Module):
+    #Initialisation method
+    def __init__(self):
+        super().__init__()
+        #define layers here
+
+        ##1st layer
+        self.conv1 = nn.Conv2d(
+            #presuming 1 channel input image?????
+            in_channels=1,
+            out_channels=32,
+            kernel_size=(3,3),
+            # stride=(2,2),
+            padding = 1  ##RUBBISH
+        )
+
+        initialiseLayer(self.conv1)
+
+        ##### randomly initialise params??????
+
+        self.norm2 = nn.BatchNorm2d(num_features=32)
+        
+        #relu
+
+        ##2nd layer
+        self.dropout3 = nn.Dropout(p=0.5)
+
+        self.conv4 = nn.Conv2d(
+            in_channels = 32,
+            out_channels = 32,
+            kernel_size = (3,3),
+            #stride = (2,2)
+            padding = 1  ##RUBBISH
+        )
+
+        initialiseLayer(self.conv4)
+
+        self.norm5 = nn.BatchNorm2d(num_features = 32)
+        
+        #relu
+
+        #maxpooling
+        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
+
+        ##3rd layer
+        self.conv7 = nn.Conv2d(
+            in_channels = 32,
+            out_channels = 64,
+            kernel_size = (3,3),
+            #stride = (2,2)
+            padding = 1 ##RUBBISH
+        )
+
+        initialiseLayer(self.conv7)
+
+        self.norm8 = nn.BatchNorm2d(num_features = 64)
+
+        #relu
+
+        ##4th layer
+        self.dropout9 = nn.Dropout(p=0.5)
+
+        self.conv10 = nn.Conv2d(
+            in_channels = 64,
+            out_channels = 64,
+            kernel_size = (3,3),
+            #stride = (2,2)
+            padding = 1  ##RUBBISH
+        )
+
+        initialiseLayer(self.conv10)
+        
+        self.norm11 = nn.BatchNorm2d(num_features = 64)
+
+        #relu
+
+        #[32, 64, 43, 21]
+        ##5th layer
+        self.fc12 = nn.Linear(in_features=98112,out_features=1024)
+
+        initialiseLayer(self.fc12)
+        # Sigmoid
+        
+        #6th layer
+        self.dropout13 = nn.Dropout(p=0.5)
+        self.fc14 = nn.Linear(in_features=1024 ,out_features=10  )
+
+        initialiseLayer(self.fc14)
+        #Softmax
+
+    def forward(self,x):
+        #define forward pass here
+        ##1
+        x = self.conv1(x)
+        x = self.norm2(x)
+        x = F.relu(x)
+        ##2
+        x = self.dropout3(x)
+        x = self.conv4(x)
+        x = self.norm5(x)
+        x = F.relu(x)
+        x = self.pool6(x)
+        ##3
+        x = self.conv7(x)
+        x = self.norm8(x)
+        x = F.relu(x)
+        ##4
+        x = self.dropout9(x)
+        x = self.conv10(x)
+        x = self.norm11(x)
+        x = F.relu(x)
+
+        #Flatten
+        x = torch.flatten(x,start_dim = 1)
+
+        ##5
+        x = self.fc12(x)
+        x = torch.sigmoid(x)
+        ##6
+        x = self.dropout13(x)
+        x = self.fc14(x)
+        x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
+        return x
+
+#endregion NetworkClasses
+
+
 def accuracy(logits, targets):
     correct = (torch.argmax(logits,1) == targets).sum()
     accuracy = float(correct)/targets.shape[0]
     return accuracy
 
-
-model = LMC_Net().to(device)
+# model = LMC_Net().to(device)
 # item = next(iter(train_loader_LMC))
 # # item.to(device)
 # print(item[0].shape)
@@ -182,7 +329,7 @@ model = LMC_Net().to(device)
 # print()
 
 
-def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, momentum_=0.9, weightDecay=1e-5):
+def trainAndValidate(model, trainingData, testData, numEpochs=8, learningRate=0.001, momentum_=0.9, weightDecay=1e-5):
     optimiser = optim.SGD(
         params=model.parameters(),
         lr=learningRate,
@@ -192,14 +339,12 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
 
     criterion = nn.CrossEntropyLoss()
 
-
-
-
-    #####TRAINING LOOP#######
+    #####EPOCH LOOP#######
     for epoch in range(0,numEpochs):
         print(epoch)
         myLoss = 0
         myAcc = 0
+        #####TRAINING LOOP#######
         #for each batch (input is 32 images)
         for i,(input,target,filenames) in enumerate(trainingData):
             #training loop for single batch
@@ -232,6 +377,7 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
         logitFilenameDictionary = {}
         targetFilenameDictionary = {}
 
+        #####TEST LOOP#######
         # Don't need to track grad
         with torch.no_grad():
             # For each batch in test set
@@ -269,12 +415,12 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
         #calculating accuracy using the dictionaries
         correctPredictions = 0
         numberOfFiles = len(targetFilenameDictionary)
-        correctPreds = torch.zeros(10).to(device)
-        noFiles = torch.zeros(10).to(device)
-        # for each file
+        correctPredsPerClass = torch.zeros(10).to(device)
+        noFilesPerClass = torch.zeros(10).to(device)
+        # count the number of files per class
         for keyFilename in targetFilenameDictionary:
             #add up number of filenames in each class
-            noFiles[targetFilenameDictionary[keyFilename]] += 1
+            noFilesPerClass[targetFilenameDictionary[keyFilename]] += 1
 
 
         #Test accuracy for this epoch
@@ -292,28 +438,40 @@ def trainAndValidate(trainingData, testData, numEpochs=8, learningRate=0.001, mo
             if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
                 correctPredictions += 1
 
-                correctPreds[targetFilenameDictionary[filename]] += 1
+                correctPredsPerClass[targetFilenameDictionary[filename]] += 1
         
         #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
         testAccuracy = float(correctPredictions)/float(numberOfFiles)
-        testAcc = torch.div(correctPreds, noFiles)
+        testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
         summary_writer.add_scalar('accuracy/test', testAccuracy, epoch)
 
-        print(testAcc)
+        print(testAccPerClass)
 
     summary_writer.close()
 
 
 
 
+#region Models
+# LMC_model = LMC_Net().to(device)
+# trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, 8, 0.001, 0.9, 1e-5)
 
-###
+# MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
+# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, 8, 0.001, 0.9, 1e-5)
 
-trainAndValidate(train_loader_LMC, test_loader_LMC, 20, 0.001, 0.9, 1e-5)
+MLMC_model = MLMC_Net().to(device)
+trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, 8, 0.001, 0.9, 1e-5)
+
+# model = MLMC_Net().to(device)
+# item = next(iter(train_loader_MLMC))
+# print(item[0].shape)
+# print(model(item[0]).shape)
+# print()
 
 
 
 
+#endregion Models
 
 
 ################################################
@@ -451,6 +609,5 @@ trainAndValidate(train_loader_LMC, test_loader_LMC, 20, 0.001, 0.9, 1e-5)
 # 4.) what L2 regularization value to use? - use common values
 # 5.) how do you do the audio segment combination in testing: how de we interpret the filenames thing?
 # 6.) How many epochs?
-# 7.) initialise layer?
 
 #endregion notes
