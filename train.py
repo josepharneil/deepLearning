@@ -131,7 +131,7 @@ class LMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            #stride = (2,2)
+            stride = (2,2),
             padding = 1  ##RUBBISH
         )
 
@@ -143,7 +143,7 @@ class LMC_Net(nn.Module):
 
         #[32, 64, 43, 21]
         ##5th layer
-        self.fc12 = nn.Linear(in_features=57792,out_features=1024)
+        self.fc12 = nn.Linear(in_features=15488,out_features=1024)
 
         initialiseLayer(self.fc12)
         #Sigmoid
@@ -166,6 +166,7 @@ class LMC_Net(nn.Module):
         x = self.conv4(x)
         x = self.norm5(x)
         x = F.relu(x)
+        # x = self.dropout3(x)
         x = self.pool6(x)
         ##3
         x = self.conv7(x)
@@ -176,6 +177,7 @@ class LMC_Net(nn.Module):
         x = self.conv10(x)
         x = self.norm11(x)
         x = F.relu(x)
+        # x = self.dropout9(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
@@ -186,6 +188,7 @@ class LMC_Net(nn.Module):
         ##6
         x = self.dropout13(x)
         x = self.fc14(x)
+        # x = self.dropout13(x)
         # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
@@ -255,7 +258,7 @@ class MLMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            #stride = (2,2)
+            stride = (2,2),
             padding = 1  ##RUBBISH
         )
 
@@ -265,9 +268,9 @@ class MLMC_Net(nn.Module):
 
         #relu
 
-        #[32, 64, 43, 21]
         ##5th layer
-        self.fc12 = nn.Linear(in_features=98112,out_features=1024)
+        self.fc12 = nn.Linear(in_features=26048,out_features=1024)
+        # self.fc12 = nn.Linear(in_features=98112,out_features=1024)
 
         initialiseLayer(self.fc12)
         # Sigmoid
@@ -310,7 +313,7 @@ class MLMC_Net(nn.Module):
         ##6
         x = self.dropout13(x)
         x = self.fc14(x)
-        x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
+        # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
 #endregion NetworkClasses
@@ -456,12 +459,19 @@ def trainAndValidate(model,
             testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
             summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), testAccuracy, epoch)
 
-            # print(testAccPerClass)
+            print("Per test accuracy of",tensorboardDatasetName,"=",testAccPerClass)
+            aveAcc = (torch.sum(testAccPerClass) / 10)
+            print("Average accuracy of",tensorboardDatasetName,"=",aveAcc)
 
     summary_writer.close()
 
 
 
+# model = MLMC_Net().to(device)
+# item = next(iter(train_loader_MLMC))
+# print(item[0].shape)
+# print(model(item[0]).shape)
+# print()
 
 
 
@@ -469,14 +479,18 @@ def trainAndValidate(model,
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 8, 0.001, 0.9, 1e-5)
+# print(LMC_model)
+# for name, param in LMC_model.named_parameters():
+    # if param.requires_grad:
+        # print(name, param.data.size())
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 0.9, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
 
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 8, 0.001, 0.9, 1e-5)
+trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 0.9, 1e-5)
 # print(MC_logitFilenameDictionary)
 # print(MC_targetFilenameDictionary)
 
@@ -574,4 +588,8 @@ TSCNN()
 # 1.) check location of dropout layers -> convolution and relu THEN dropout
 # 2.) what L2 regularization value to use -> try different ones like 1e-5,1e-4,1e-3
 
+# Uncertainties:
+# L2 parameter (weight decay)
+# Position of dropout layers
+# Stride on last conv layer
 #endregion notes
