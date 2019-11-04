@@ -571,11 +571,7 @@ TSCNN()
 #to do forward pass: output = LMC_model(input)
 
 #####QUESTIONS:
-# 1.) stride and padding for the convolutional layers: e.g. how is the image size maintained across the 
-# 2.) check location of dropout layers
-# 3.) fully connected layers? paper says one layer, seems to be 2? if 1 layer, how can the output of conv layers be flatened to 1024????
-# 4.) what L2 regularization value to use? - use common values
-# 5.) how do you do the audio segment combination in testing: how de we interpret the filenames thing?
-# 6.) How many epochs?
+# 1.) check location of dropout layers -> convolution and relu THEN dropout
+# 2.) what L2 regularization value to use -> try different ones like 1e-5,1e-4,1e-3
 
 #endregion notes
