@@ -587,6 +587,16 @@ def TSCNN():
 #to do forward pass: output = LMC_model(input)
 
 #####QUESTIONS:
+
+
+
+
+# WHERE DO THE DROPOUTS GO
+
+
+
+
+
 # 1.) check location of dropout layers -> convolution and relu THEN dropout
 # 2.) what L2 regularization value to use -> try different ones like 1e-5,1e-4,1e-3
 
