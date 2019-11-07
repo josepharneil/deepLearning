@@ -162,22 +162,22 @@ class LMC_Net(nn.Module):
         x = self.norm2(x)
         x = F.relu(x)
         ##2
-        x = self.dropout3(x)
+        # x = self.dropout3(x)
         x = self.conv4(x)
         x = self.norm5(x)
         x = F.relu(x)
-        # x = self.dropout3(x)
+        x = self.dropout3(x)
         x = self.pool6(x)
         ##3
         x = self.conv7(x)
         x = self.norm8(x)
         x = F.relu(x)
         ##4
-        x = self.dropout9(x)
+        # x = self.dropout9(x)
         x = self.conv10(x)
         x = self.norm11(x)
         x = F.relu(x)
-        # x = self.dropout9(x)
+        x = self.dropout9(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
@@ -185,8 +185,9 @@ class LMC_Net(nn.Module):
         ##5
         x = self.fc12(x)
         x = torch.sigmoid(x)
-        ##6
         x = self.dropout13(x)
+        ##6
+        # x = self.dropout13(x)
         x = self.fc14(x)
         # x = self.dropout13(x)
         # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
@@ -358,6 +359,7 @@ def trainAndValidate(model,
         myLoss = 0
         myAcc = 0
         #####TRAINING LOOP#######
+        model.train()
         #for each batch (input is 32 images)
         for i,(input,target,filenames) in enumerate(trainingData):
             #training loop for single batch
@@ -490,7 +492,7 @@ trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilename
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 0.9, 1e-5)
+# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 0.9, 1e-5)
 # print(MC_logitFilenameDictionary)
 # print(MC_targetFilenameDictionary)
 
@@ -554,7 +556,7 @@ def TSCNN():
     print("Average accuracy for TSCNN:",averageAccuracy.item())
 
 
-TSCNN()
+# TSCNN()
 
 
 
