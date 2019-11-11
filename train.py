@@ -81,7 +81,7 @@ class LMC_Net(nn.Module):
             padding = 1  ##RUBBISH
         )
 
-        initialiseLayer(self.conv1)
+        #initialiseLayer(self.conv1)
 
         ##### randomly initialise params??????
 
@@ -100,7 +100,7 @@ class LMC_Net(nn.Module):
             padding = 1  ##RUBBISH
         )
 
-        initialiseLayer(self.conv4)
+        #initialiseLayer(self.conv4)
 
         self.norm5 = nn.BatchNorm2d(num_features = 32)
         
@@ -118,7 +118,7 @@ class LMC_Net(nn.Module):
             padding = 1 ##RUBBISH
         )
 
-        initialiseLayer(self.conv7)
+        #initialiseLayer(self.conv7)
 
         self.norm8 = nn.BatchNorm2d(num_features = 64)
 
@@ -131,11 +131,12 @@ class LMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            stride = (2,2),
+            # stride = (2,2), #turned off 
             padding = 1  ##RUBBISH
         )
+        #pool instead of stride
 
-        initialiseLayer(self.conv10)
+        #initialiseLayer(self.conv10)
         
         self.norm11 = nn.BatchNorm2d(num_features = 64)
 
@@ -145,14 +146,14 @@ class LMC_Net(nn.Module):
         ##5th layer
         self.fc12 = nn.Linear(in_features=15488,out_features=1024)
 
-        initialiseLayer(self.fc12)
+        #initialiseLayer(self.fc12)
         #Sigmoid
         
         #6th layer
         self.dropout13 = nn.Dropout(p=0.5)
         self.fc14 = nn.Linear(in_features=1024 ,out_features=10  )
 
-        initialiseLayer(self.fc14)
+        #initialiseLayer(self.fc14)
         #Softmax
 
     def forward(self,x):
@@ -166,8 +167,9 @@ class LMC_Net(nn.Module):
         x = self.conv4(x)
         x = self.norm5(x)
         x = F.relu(x)
-        x = self.dropout3(x)
+        # x = self.dropout3(x)
         x = self.pool6(x)
+        x = self.dropout3(x)
         ##3
         x = self.conv7(x)
         x = self.norm8(x)
@@ -175,6 +177,7 @@ class LMC_Net(nn.Module):
         ##4
         # x = self.dropout9(x)
         x = self.conv10(x)
+        x = self.pool6(x)
         x = self.norm11(x)
         x = F.relu(x)
         x = self.dropout9(x)
@@ -209,7 +212,7 @@ class MLMC_Net(nn.Module):
             padding = 1  ##RUBBISH
         )
 
-        initialiseLayer(self.conv1)
+        # initialiseLayer(self.conv1)
 
         ##### randomly initialise params??????
 
@@ -228,7 +231,7 @@ class MLMC_Net(nn.Module):
             padding = 1  ##RUBBISH
         )
 
-        initialiseLayer(self.conv4)
+        # initialiseLayer(self.conv4)
 
         self.norm5 = nn.BatchNorm2d(num_features = 32)
         
@@ -246,7 +249,7 @@ class MLMC_Net(nn.Module):
             padding = 1 ##RUBBISH
         )
 
-        initialiseLayer(self.conv7)
+        # initialiseLayer(self.conv7)
 
         self.norm8 = nn.BatchNorm2d(num_features = 64)
 
@@ -259,11 +262,11 @@ class MLMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            stride = (2,2),
+            # stride = (2,2), #changed to pool
             padding = 1  ##RUBBISH
         )
 
-        initialiseLayer(self.conv10)
+        # initialiseLayer(self.conv10)
         
         self.norm11 = nn.BatchNorm2d(num_features = 64)
 
@@ -290,11 +293,12 @@ class MLMC_Net(nn.Module):
         x = self.norm2(x)
         x = F.relu(x)
         ##2
-        x = self.dropout3(x)
+        # x = self.dropout3(x)
         x = self.conv4(x)
         x = self.norm5(x)
         x = F.relu(x)
         x = self.pool6(x)
+        x = self.dropout3(x)
         ##3
         x = self.conv7(x)
         x = self.norm8(x)
@@ -302,6 +306,7 @@ class MLMC_Net(nn.Module):
         ##4
         x = self.dropout9(x)
         x = self.conv10(x)
+        x = self.pool6(x)
         x = self.norm11(x)
         x = F.relu(x)
 
@@ -341,13 +346,14 @@ def trainAndValidate(model,
                     tensorboardDatasetName,
                     numEpochs=8, 
                     learningRate=0.001, 
-                    momentum_=0.9, 
+                    # momentum_=0.9, 
                     weightDecay=1e-5
                     ):
-    optimiser = optim.SGD(
+    # optimiser = optim.SGD(
+    optimiser = optim.Adam(
         params=model.parameters(),
         lr=learningRate,
-        momentum = momentum_,
+        # momentum = momentum_,
         weight_decay=weightDecay#L2 regularization -> what value????
         )
 
@@ -485,14 +491,14 @@ LMC_model = LMC_Net().to(device)
 # for name, param in LMC_model.named_parameters():
     # if param.requires_grad:
         # print(name, param.data.size())
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 0.9, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
 
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 0.9, 1e-5)
+# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
 # print(MC_logitFilenameDictionary)
 # print(MC_targetFilenameDictionary)
 
@@ -563,7 +569,7 @@ def TSCNN():
 # MLMC_logitFilenameDictionary = {}
 # MLMC_targetFilenameDictionary = {}
 # MLMC_model = MLMC_Net().to(device)
-# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',8, 0.001, 0.9, 1e-5)
+# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',8, 0.001, 1e-5)
 
 
 
@@ -588,6 +594,13 @@ def TSCNN():
 
 #####QUESTIONS:
 
+
+# dont initialise layer
+# droupout after pooling
+
+# pool instead of 2,2 stride?
+
+# find different from SGD in paper
 
 
 
