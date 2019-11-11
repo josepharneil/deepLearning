@@ -97,7 +97,8 @@ class LMC_Net(nn.Module):
             out_channels = 32,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 1  ##RUBBISH
+            # padding = 2  ##RUBBISH
+            padding = 1 ##RUBBISH
         )
 
         #initialiseLayer(self.conv4)
@@ -107,7 +108,8 @@ class LMC_Net(nn.Module):
         #relu
 
         #maxpooling
-        self.pool6 = nn.MaxPool2d(kernel_size=(2,2))#,padding=1)
+        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))#,padding=1)
+        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
         self.conv7 = nn.Conv2d(
@@ -144,8 +146,8 @@ class LMC_Net(nn.Module):
 
         #[32, 64, 43, 21]
         ##5th layer
-        self.fc12 = nn.Linear(in_features=13440,out_features=1024)
-
+        self.fc12 = nn.Linear(in_features=15488,out_features=1024)
+        #13440
         #initialiseLayer(self.fc12)
         #Sigmoid
         
@@ -160,38 +162,47 @@ class LMC_Net(nn.Module):
         #define forward pass here
         ##1
         x = self.conv1(x)
+        # print(x.shape)
         x = self.norm2(x)
         x = F.relu(x)
         ##2
         # x = self.dropout3(x)
         x = self.conv4(x)
+        # print(x.shape)
         x = self.norm5(x)
         x = F.relu(x)
         # x = self.dropout3(x)
         x = self.pool6(x)
+        # print(x.shape)
         x = self.dropout3(x)
         ##3
         x = self.conv7(x)
+        # print(x.shape)
         x = self.norm8(x)
         x = F.relu(x)
         ##4
         # x = self.dropout9(x)
         x = self.conv10(x)
+        # print(x.shape)
         x = self.norm11(x)
         x = F.relu(x)
         x = self.pool6(x)
+        # print(x.shape)
         x = self.dropout9(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
+        # print(x.shape)
 
         ##5
         
         x = self.fc12(x)
+        # print(x.shape)
         x = torch.sigmoid(x)
         x = self.dropout13(x)
         ##6
         x = self.fc14(x)
+        # print(x.shape)
         return x
 
 class MLMC_Net(nn.Module):
@@ -487,9 +498,9 @@ LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
 # print(LMC_model)
-for name, param in LMC_model.named_parameters():
-    if param.requires_grad:
-        print(name, param.data.size())
+# for name, param in LMC_model.named_parameters():
+    # if param.requires_grad:
+        # print(name, param.data.size())
 trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
@@ -583,37 +594,6 @@ def TSCNN():
 
 #region notes
 
-###optimizer: SGD; L2 reg; learn rate 0.001; momentum 0.9
-###loss function: cross entropy
-#nb: don't use dropout in testing
-
-#result = LMC_model().to(device)
-#to instantiate: LMC_model = LMC_Net()
-#to do forward pass: output = LMC_model(input)
-
-#####QUESTIONS:
-
-
-# dont initialise layer
-# droupout after pooling
-
-# pool instead of 2,2 stride?
-
-# find different from SGD in paper
-
-
-
-# WHERE DO THE DROPOUTS GO
-
-
-
-
-
-# 1.) check location of dropout layers -> convolution and relu THEN dropout
-# 2.) what L2 regularization value to use -> try different ones like 1e-5,1e-4,1e-3
-
-# Uncertainties:
-# L2 parameter (weight decay)
-# Position of dropout layers
-# Stride on last conv layer
+#TA told us to remove padding from both pool layers, but this leads to incorrect image sizes and wrong number of params according to table; could fix using extra padding in conv layers, but seems a bit BS
+#TA told us : max pool THEN dropout
 #endregion notes
