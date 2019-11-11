@@ -107,7 +107,7 @@ class LMC_Net(nn.Module):
         #relu
 
         #maxpooling
-        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
+        self.pool6 = nn.MaxPool2d(kernel_size=(2,2))#,padding=1)
 
         ##3rd layer
         self.conv7 = nn.Conv2d(
@@ -144,7 +144,7 @@ class LMC_Net(nn.Module):
 
         #[32, 64, 43, 21]
         ##5th layer
-        self.fc12 = nn.Linear(in_features=15488,out_features=1024)
+        self.fc12 = nn.Linear(in_features=13440,out_features=1024)
 
         #initialiseLayer(self.fc12)
         #Sigmoid
@@ -177,23 +177,21 @@ class LMC_Net(nn.Module):
         ##4
         # x = self.dropout9(x)
         x = self.conv10(x)
-        x = self.pool6(x)
         x = self.norm11(x)
         x = F.relu(x)
+        x = self.pool6(x)
         x = self.dropout9(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
 
         ##5
+        
         x = self.fc12(x)
         x = torch.sigmoid(x)
         x = self.dropout13(x)
         ##6
-        # x = self.dropout13(x)
         x = self.fc14(x)
-        # x = self.dropout13(x)
-        # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
         return x
 
 class MLMC_Net(nn.Module):
@@ -402,6 +400,7 @@ def trainAndValidate(model,
         #####TEST LOOP#######
         # Don't need to track grad
         with torch.no_grad():
+            softmax = nn.Softmax(dim=0)
             # For each batch in test set
             for i,(input,target,filenames) in enumerate(testData):
                 input  = input.to(device)
@@ -454,7 +453,7 @@ def trainAndValidate(model,
                 #logits sum is the elementwise sum of logits 
                 logitsSum = torch.zeros(10).to(device)
                 for logits in logitsList:
-                    logitsSum += logits
+                    logitsSum += softmax(logits)
                 
                 #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
                 if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
@@ -475,8 +474,8 @@ def trainAndValidate(model,
 
 
 
-# model = MLMC_Net().to(device)
-# item = next(iter(train_loader_MLMC))
+# model = LMC_Net().to(device)
+# item = next(iter(train_loader_LMC))
 # print(item[0].shape)
 # print(model(item[0]).shape)
 # print()
@@ -488,9 +487,9 @@ LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
 # print(LMC_model)
-# for name, param in LMC_model.named_parameters():
-    # if param.requires_grad:
-        # print(name, param.data.size())
+for name, param in LMC_model.named_parameters():
+    if param.requires_grad:
+        print(name, param.data.size())
 trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
