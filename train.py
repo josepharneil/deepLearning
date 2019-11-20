@@ -28,9 +28,29 @@ test_loader_LMC = torch.utils.data.DataLoader(
     batch_size=32, shuffle=False,
     num_workers=8, pin_memory=True)
 
+# # result = np.empty()
+# from PIL import Image
+# for i,(input,target,filenames) in enumerate(train_loader_LMC):
+#     # print(input[1].shape)
+#     input2d = np.squeeze(input[i], axis=0)
+#     # print(input2d.shape)
+#     input2d = input2d.numpy()
+#     # print(input2d)
+#     result = np.concatenate(input2d)
+
+# img = Image.fromarray(result, 'L')
+# img.show()
+# # break
+
+
+
+
 # print(len(test_loader_LMC))
 # for i,(input,target,filenames) in enumerate(test_loader_LMC):
-    # print(i)
+#     print(i)
+
+# for i, (input,target,filenames) in enumerate(trainloader):
+    # print(type(images))
 
 train_loader_MC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
@@ -51,6 +71,11 @@ test_loader_MLMC = torch.utils.data.DataLoader(
      UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
      batch_size=32, shuffle=False,
      num_workers=8, pin_memory=True)
+
+# result = 0
+# for i,(input,target,filenames) in enumerate(test_loader_MLMC):
+#     result += (input.shape)[0]
+# print(result)
 
 # for i,(input,target,filenames) in enumerate(train_loader_LMC):
     # print(i)
@@ -108,7 +133,7 @@ class LMC_Net(nn.Module):
         #relu
 
         #maxpooling
-        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))#,padding=1)
+        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
         self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
@@ -133,10 +158,11 @@ class LMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            # stride = (2,2), #turned off 
+            stride = (2,2), #turned off 
             padding = 1  ##RUBBISH
         )
         #pool instead of stride
+        # self.pool11 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         #initialiseLayer(self.conv10)
         
@@ -173,7 +199,7 @@ class LMC_Net(nn.Module):
         x = F.relu(x)
         # x = self.dropout3(x)
         x = self.pool6(x)
-        # print(x.shape)
+        print(x.shape)
         x = self.dropout3(x)
         ##3
         x = self.conv7(x)
@@ -186,7 +212,7 @@ class LMC_Net(nn.Module):
         # print(x.shape)
         x = self.norm11(x)
         x = F.relu(x)
-        x = self.pool6(x)
+        # x = self.pool11(x)
         # print(x.shape)
         x = self.dropout9(x)
 
@@ -497,10 +523,10 @@ def trainAndValidate(model,
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-# print(LMC_model)
-# for name, param in LMC_model.named_parameters():
-    # if param.requires_grad:
-        # print(name, param.data.size())
+print(LMC_model)
+for name, param in LMC_model.named_parameters():
+    if param.requires_grad:
+        print(name, param.data.size())
 trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
@@ -508,7 +534,7 @@ trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilename
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
+trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
 # print(MC_logitFilenameDictionary)
 # print(MC_targetFilenameDictionary)
 
@@ -572,7 +598,7 @@ def TSCNN():
     print("Average accuracy for TSCNN:",averageAccuracy.item())
 
 
-# TSCNN()
+TSCNN()
 
 
 
