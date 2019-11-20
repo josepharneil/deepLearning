@@ -620,6 +620,6 @@ TSCNN()
 
 #region notes
 
-#TA told us to remove padding from both pool layers, but this leads to incorrect image sizes and wrong number of params according to table; could fix using extra padding in conv layers, but seems a bit BS
+#TA told us to remove padding from  the pool6 layer, but this leads to incorrect image sizes and wrong number of params according to table; could fix using extra padding in conv layers, but seems a bit BS
 #TA told us : max pool THEN dropout
 #endregion notes
