@@ -94,7 +94,6 @@ class LMC_Net(nn.Module):
     #Initialisation method
     def __init__(self):
         super().__init__()
-        #define layers here
 
         ##1st layer
         self.conv1 = nn.Conv2d(
@@ -103,132 +102,101 @@ class LMC_Net(nn.Module):
             out_channels=32,
             kernel_size=(3,3),
             # stride=(2,2),
-            padding = 1  ##RUBBISH
+            padding = 1 
         )
 
-        #initialiseLayer(self.conv1)
-
-        ##### randomly initialise params??????
-
-        self.norm2 = nn.BatchNorm2d(num_features=32)
+        self.norm1 = nn.BatchNorm2d(num_features=32)
         
-        #relu
 
         ##2nd layer
-        self.dropout3 = nn.Dropout(p=0.5)
+        self.dropout1 = nn.Dropout(p=0.5)
 
-        self.conv4 = nn.Conv2d(
+        self.conv2 = nn.Conv2d(
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            #stride = (2,2)
-            # padding = 2  ##RUBBISH
-            padding = 1 ##RUBBISH
+            padding = 1 
         )
 
-        #initialiseLayer(self.conv4)
+        self.norm2 = nn.BatchNorm2d(num_features = 32)
 
-        self.norm5 = nn.BatchNorm2d(num_features = 32)
-        
-        #relu
-
-        #maxpooling
         # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
         self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
-        self.conv7 = nn.Conv2d(
+        self.conv3 = nn.Conv2d(
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 1 ##RUBBISH
+            padding = 1
         )
 
-        #initialiseLayer(self.conv7)
-
-        self.norm8 = nn.BatchNorm2d(num_features = 64)
-
-        #relu
+        self.norm3 = nn.BatchNorm2d(num_features = 64)
 
         ##4th layer
-        self.dropout9 = nn.Dropout(p=0.5)
+        self.dropout2 = nn.Dropout(p=0.5)
 
-        self.conv10 = nn.Conv2d(
+        self.conv4 = nn.Conv2d(
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            stride = (2,2), #turned off 
-            padding = 1  ##RUBBISH
+            stride = (2,2),  
+            padding = 1
         )
         #pool instead of stride
         # self.pool11 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
-
-        #initialiseLayer(self.conv10)
         
-        self.norm11 = nn.BatchNorm2d(num_features = 64)
+        self.norm4 = nn.BatchNorm2d(num_features = 64)
 
-        #relu
-
-        #[32, 64, 43, 21]
         ##5th layer
-        self.fc12 = nn.Linear(in_features=15488,out_features=1024)
+        self.fc1 = nn.Linear(in_features=15488,out_features=1024)
         #13440
-        #initialiseLayer(self.fc12)
-        #Sigmoid
         
         #6th layer
-        self.dropout13 = nn.Dropout(p=0.5)
-        self.fc14 = nn.Linear(in_features=1024 ,out_features=10  )
-
-        #initialiseLayer(self.fc14)
-        #Softmax
+        self.dropout3 = nn.Dropout(p=0.5)
+        self.fc2 = nn.Linear(in_features=1024 ,out_features=10)
 
     def forward(self,x):
-        #define forward pass here
         ##1
         x = self.conv1(x)
-        # print(x.shape)
-        x = self.norm2(x)
+        x = self.norm1(x)
         x = F.relu(x)
+
         ##2
         # x = self.dropout3(x)
-        x = self.conv4(x)
-        # print(x.shape)
-        x = self.norm5(x)
+        x = self.conv2(x)
+        x = self.norm2(x)
         x = F.relu(x)
         # x = self.dropout3(x)
         x = self.pool6(x)   ###here is the uncertainty
-        #print(x.shape)
-        x = self.dropout3(x)
+        x = self.dropout1(x)
+
         ##3
-        x = self.conv7(x)
-        # print(x.shape)
-        x = self.norm8(x)
+        x = self.conv3(x)
+
+        x = self.norm3(x)
         x = F.relu(x)
+
         ##4
         # x = self.dropout9(x)
-        x = self.conv10(x)
-        # print(x.shape)
-        x = self.norm11(x)
+        x = self.conv4(x)
+        x = self.norm4(x)
         x = F.relu(x)
         # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
-        # print(x.shape)
-        x = self.dropout9(x)
+        x = self.dropout2(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
-        # print(x.shape)
 
         ##5
-        
-        x = self.fc12(x)
-        # print(x.shape)
+        x = self.fc1(x)
         x = torch.sigmoid(x)
-        x = self.dropout13(x)
+        x = self.dropout3(x)
+
         ##6
-        x = self.fc14(x)
-        # print(x.shape)
+        x = self.fc2(x)
+
         return x
 
 class MLMC_Net(nn.Module):
@@ -237,124 +205,108 @@ class MLMC_Net(nn.Module):
         super().__init__()
         #define layers here
 
-        ##1st layer
+       ##1st layer
         self.conv1 = nn.Conv2d(
             #presuming 1 channel input image?????
             in_channels=1,
             out_channels=32,
             kernel_size=(3,3),
             # stride=(2,2),
-            padding = 1  ##RUBBISH
+            padding = 1 
         )
 
-        # initialiseLayer(self.conv1)
-
-        ##### randomly initialise params??????
-
-        self.norm2 = nn.BatchNorm2d(num_features=32)
+        self.norm1 = nn.BatchNorm2d(num_features=32)
         
-        #relu
 
         ##2nd layer
-        self.dropout3 = nn.Dropout(p=0.5)
+        self.dropout1 = nn.Dropout(p=0.5)
 
-        self.conv4 = nn.Conv2d(
+        self.conv2 = nn.Conv2d(
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            #stride = (2,2)
-            padding = 1  ##RUBBISH
+            padding = 1 
         )
 
-        # initialiseLayer(self.conv4)
+        self.norm2 = nn.BatchNorm2d(num_features = 32)
 
-        self.norm5 = nn.BatchNorm2d(num_features = 32)
-        
-        #relu
-
-        #maxpooling
+        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
         self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
-        self.conv7 = nn.Conv2d(
+        self.conv3 = nn.Conv2d(
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
-            padding = 1 ##RUBBISH
+            padding = 1
         )
 
-        # initialiseLayer(self.conv7)
-
-        self.norm8 = nn.BatchNorm2d(num_features = 64)
-
-        #relu
+        self.norm3 = nn.BatchNorm2d(num_features = 64)
 
         ##4th layer
-        self.dropout9 = nn.Dropout(p=0.5)
+        self.dropout2 = nn.Dropout(p=0.5)
 
-        self.conv10 = nn.Conv2d(
+        self.conv4 = nn.Conv2d(
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            # stride = (2,2), #changed to pool
-            padding = 1  ##RUBBISH
+            stride = (2,2),  
+            padding = 1
         )
-
-        # initialiseLayer(self.conv10)
+        #pool instead of stride
+        # self.pool11 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
         
-        self.norm11 = nn.BatchNorm2d(num_features = 64)
-
-        #relu
+        self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        self.fc12 = nn.Linear(in_features=26048,out_features=1024)
-        # self.fc12 = nn.Linear(in_features=98112,out_features=1024)
-
-        initialiseLayer(self.fc12)
-        # Sigmoid
+        self.fc1 = nn.Linear(in_features=26048,out_features=1024)
         
         #6th layer
-        self.dropout13 = nn.Dropout(p=0.5)
-        self.fc14 = nn.Linear(in_features=1024 ,out_features=10  )
-
-        initialiseLayer(self.fc14)
-        #Softmax
+        self.dropout3 = nn.Dropout(p=0.5)
+        self.fc2 = nn.Linear(in_features=1024 ,out_features=10)
 
     def forward(self,x):
-        #define forward pass here
         ##1
         x = self.conv1(x)
-        x = self.norm2(x)
+        x = self.norm1(x)
         x = F.relu(x)
+
         ##2
         # x = self.dropout3(x)
-        x = self.conv4(x)
-        x = self.norm5(x)
+        x = self.conv2(x)
+        x = self.norm2(x)
         x = F.relu(x)
-        x = self.pool6(x)
-        x = self.dropout3(x)
+        # x = self.dropout3(x)
+        x = self.pool6(x)   ###here is the uncertainty
+        x = self.dropout1(x)
+
         ##3
-        x = self.conv7(x)
-        x = self.norm8(x)
+        x = self.conv3(x)
+
+        x = self.norm3(x)
         x = F.relu(x)
+
         ##4
-        x = self.dropout9(x)
-        x = self.conv10(x)
-        x = self.pool6(x)
-        x = self.norm11(x)
+        # x = self.dropout9(x)
+        x = self.conv4(x)
+        x = self.norm4(x)
         x = F.relu(x)
+        # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
+        x = self.dropout2(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
 
         ##5
-        x = self.fc12(x)
+        print(x.shape)
+        x = self.fc1(x)
         x = torch.sigmoid(x)
+        x = self.dropout3(x)
+
         ##6
-        x = self.dropout13(x)
-        x = self.fc14(x)
-        # x = F.softmax(x,dim=1)     #loss function is cross entropy loss, which needs raw logits, so we do not want to apply softmax here
+        x = self.fc2(x)
+
         return x
 
 #endregion NetworkClasses
@@ -523,20 +475,20 @@ def trainAndValidate(model,
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-# print(LMC_model)
-# for name, param in LMC_model.named_parameters():
-    # if param.requires_grad:
-        # print(name, param.data.size())
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
-# print(LMC_logitFilenameDictionary)
-# print(LMC_targetFilenameDictionary)
+print(LMC_model)
+## for name, param in LMC_model.named_parameters():
+    ## if param.requires_grad:
+        ## print(name, param.data.size())
+# trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
+## print(LMC_logitFilenameDictionary)
+## print(LMC_targetFilenameDictionary)
 
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
 trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
-# print(MC_logitFilenameDictionary)
-# print(MC_targetFilenameDictionary)
+## print(MC_logitFilenameDictionary)
+## print(MC_targetFilenameDictionary)
 
 
 def TSCNN():
