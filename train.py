@@ -299,7 +299,7 @@ class MLMC_Net(nn.Module):
         x = torch.flatten(x,start_dim = 1)
 
         ##5
-        print(x.shape)
+        # print(x.shape)
         x = self.fc1(x)
         x = torch.sigmoid(x)
         x = self.dropout3(x)
@@ -336,6 +336,7 @@ def trainAndValidate(model,
                     # momentum_=0.9, 
                     weightDecay=1e-5
                     ):
+    print("Training and validating ", tensorboardDatasetName)
     # optimiser = optim.SGD(
     optimiser = optim.Adam(
         params=model.parameters(),
@@ -451,13 +452,15 @@ def trainAndValidate(model,
                     correctPredsPerClass[targetFilenameDictionary[filename]] += 1
             
             #test accuracy is obtained by dividing the number of correctly identified files, by the number of files
-            testAccuracy = float(correctPredictions)/float(numberOfFiles)
+            # testAccuracy = float(correctPredictions)/float(numberOfFiles)
             testAccPerClass = torch.div(correctPredsPerClass, noFilesPerClass)
-            summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), testAccuracy, epoch)
-
             print("Per test accuracy of",tensorboardDatasetName,"=",testAccPerClass)
             aveAcc = (torch.sum(testAccPerClass) / 10)
             print("Average accuracy of",tensorboardDatasetName,"=",aveAcc)
+
+            summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), aveAcc, epoch)
+
+
 
     summary_writer.close()
 
@@ -470,19 +473,30 @@ def trainAndValidate(model,
 # print()
 
 
-
-#region Models
-LMC_logitFilenameDictionary = {}
-LMC_targetFilenameDictionary = {}
-LMC_model = LMC_Net().to(device)
-print(LMC_model)
+# print(LMC_model)
 ## for name, param in LMC_model.named_parameters():
     ## if param.requires_grad:
         ## print(name, param.data.size())
-# trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
+
+def PrintModelParameters(model):
+    # print(LMC_model)
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            print(name, param.data.size())
+
+
+#region Models
+
+############### LMC ###############
+###The dictionaries get filled by running train and validate, and then these dictionaries are used for TSCNN
+LMC_logitFilenameDictionary = {}
+LMC_targetFilenameDictionary = {}
+LMC_model = LMC_Net().to(device)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 ## print(LMC_logitFilenameDictionary)
 ## print(LMC_targetFilenameDictionary)
 
+############### MC ###############
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
 MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
@@ -490,7 +504,7 @@ trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDict
 ## print(MC_logitFilenameDictionary)
 ## print(MC_targetFilenameDictionary)
 
-
+############### TSCNN ###############
 def TSCNN():
     softmax = nn.Softmax(dim=0)
     #LMC Probs
@@ -546,11 +560,12 @@ def TSCNN():
 TSCNN()
 
 
+############### MLMC ###############
 
-# MLMC_logitFilenameDictionary = {}
-# MLMC_targetFilenameDictionary = {}
-# MLMC_model = MLMC_Net().to(device)
-# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',8, 0.001, 1e-5)
+MLMC_logitFilenameDictionary = {}
+MLMC_targetFilenameDictionary = {}
+MLMC_model = MLMC_Net().to(device)
+trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
 
 
 
@@ -561,6 +576,9 @@ TSCNN()
 # print()
 
 #endregion Models
+
+
+
 
 
 #region notes
