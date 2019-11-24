@@ -198,8 +198,8 @@ class LMC_Net(nn.Module):
         x = self.norm5(x)
         x = F.relu(x)
         # x = self.dropout3(x)
-        x = self.pool6(x)
-        print(x.shape)
+        x = self.pool6(x)   ###here is the uncertainty
+        #print(x.shape)
         x = self.dropout3(x)
         ##3
         x = self.conv7(x)
@@ -212,7 +212,7 @@ class LMC_Net(nn.Module):
         # print(x.shape)
         x = self.norm11(x)
         x = F.relu(x)
-        # x = self.pool11(x)
+        # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
         # print(x.shape)
         x = self.dropout9(x)
 
@@ -523,10 +523,10 @@ def trainAndValidate(model,
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-print(LMC_model)
-for name, param in LMC_model.named_parameters():
-    if param.requires_grad:
-        print(name, param.data.size())
+# print(LMC_model)
+# for name, param in LMC_model.named_parameters():
+    # if param.requires_grad:
+        # print(name, param.data.size())
 trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # print(LMC_logitFilenameDictionary)
 # print(LMC_targetFilenameDictionary)
@@ -540,6 +540,7 @@ trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDict
 
 
 def TSCNN():
+    softmax = nn.Softmax(dim=0)
     #LMC Probs
     for filename in LMC_logitFilenameDictionary:
         logitsList = LMC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
@@ -548,14 +549,10 @@ def TSCNN():
         #logits sum is the elementwise sum of logits 
         logitsSum = torch.zeros(10).to(device)
         for logits in logitsList:
-            logitsSum += logits
-
-        #Apply softmax
-        softmax = nn.Softmax(dim=0)
-        probs = softmax(logitsSum)
+            logitsSum += softmax(logits)
 
         #Store new probs in dictionary
-        LMC_logitFilenameDictionary[filename] = probs
+        LMC_logitFilenameDictionary[filename] = logitsSum
 
     #MC Probs
     for filename in MC_logitFilenameDictionary:
@@ -565,14 +562,10 @@ def TSCNN():
         #logits sum is the elementwise sum of logits 
         logitsSum = torch.zeros(10).to(device)
         for logits in logitsList:
-            logitsSum += logits
-
-        #Apply softmax
-        softmax = nn.Softmax(dim=0)
-        probs = softmax(logitsSum)
+            logitsSum += softmax(logits)
 
         #Store new probs in dictionary
-        MC_logitFilenameDictionary[filename] = probs
+        MC_logitFilenameDictionary[filename] = logitsSum
 
     correctPredsPerClass = torch.zeros(10).to(device)
     noFilesPerClass = torch.zeros(10).to(device)
@@ -580,7 +573,7 @@ def TSCNN():
     #ASSUME FILENAMES ARE THE SAME IN EACH DICTIONARY
     for filename in LMC_logitFilenameDictionary:
         #combine and argmax
-        pred = torch.argmax(MC_logitFilenameDictionary[filename] + LMC_logitFilenameDictionary[filename], dim=-1)
+        pred = torch.argmax(softmax(MC_logitFilenameDictionary[filename]) + softmax(LMC_logitFilenameDictionary[filename]), dim=-1)
 
         #count number of files per class
         noFilesPerClass[LMC_targetFilenameDictionary[filename]] += 1
