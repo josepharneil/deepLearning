@@ -14,10 +14,10 @@ class UrbanSound8KDataset(data.Dataset):
         if self.mode == 'LMC':
             # Edit here to load and concatenate the neccessary features to 
             # create the LMC feature
-            LM = self.dataset[index]['features']['logmelspec']
-            Chroma = self.dataset[index]['features']['chroma']
+            LM               = self.dataset[index]['features']['logmelspec']
+            Chroma           = self.dataset[index]['features']['chroma']
             SpectralContrast = self.dataset[index]['features']['spectral_contrast']
-            Tonnetz = self.dataset[index]['features']['tonnetz']
+            Tonnetz          = self.dataset[index]['features']['tonnetz']
 
             # Concat all of above
             feature = np.concatenate((LM,Chroma,SpectralContrast,Tonnetz))
@@ -27,10 +27,10 @@ class UrbanSound8KDataset(data.Dataset):
         elif self.mode == 'MC':
             # Edit here to load and concatenate the neccessary features to 
             # create the MC feature
-            MFCC = self.dataset[index]['features']['mfcc']
-            Chroma = self.dataset[index]['features']['chroma']
+            MFCC             = self.dataset[index]['features']['mfcc']
+            Chroma           = self.dataset[index]['features']['chroma']
             SpectralContrast = self.dataset[index]['features']['spectral_contrast']
-            Tonnetz = self.dataset[index]['features']['tonnetz']
+            Tonnetz          = self.dataset[index]['features']['tonnetz']
 
             feature = np.concatenate((MFCC,Chroma,SpectralContrast,Tonnetz))
 
@@ -39,11 +39,11 @@ class UrbanSound8KDataset(data.Dataset):
         elif self.mode == 'MLMC':
             # Edit here to load and concatenate the neccessary features to 
             # create the MLMC feature
-            MFCC = self.dataset[index]['features']['mfcc']
-            LM = self.dataset[index]['features']['logmelspec']
-            Chroma = self.dataset[index]['features']['chroma']
+            MFCC             = self.dataset[index]['features']['mfcc']
+            LM               = self.dataset[index]['features']['logmelspec']
+            Chroma           = self.dataset[index]['features']['chroma']
             SpectralContrast = self.dataset[index]['features']['spectral_contrast']
-            Tonnetz = self.dataset[index]['features']['tonnetz']
+            Tonnetz          = self.dataset[index]['features']['tonnetz']
 
             feature = np.concatenate((MFCC,LM,Chroma,SpectralContrast,Tonnetz))
 
