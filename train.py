@@ -7,6 +7,7 @@ from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
+# import matplotlib.pyplot as plt
 
 from dataset import UrbanSound8KDataset
 
@@ -28,22 +29,13 @@ test_loader_LMC = torch.utils.data.DataLoader(
     batch_size=32, shuffle=False,
     num_workers=8, pin_memory=True)
 
-# # result = np.empty()
+# 
 # from PIL import Image
 # for i,(input,target,filenames) in enumerate(train_loader_LMC):
-#     # print(input[1].shape)
 #     input2d = np.squeeze(input[i], axis=0)
-#     # print(input2d.shape)
-#     input2d = input2d.numpy()
-#     # print(input2d)
-#     result = np.concatenate(input2d)
-
-# img = Image.fromarray(result, 'L')
-# img.show()
-# # break
-
-
-
+#     plt.imshow(input2d.numpy())
+#     plt.show()
+#     break
 
 # print(len(test_loader_LMC))
 # for i,(input,target,filenames) in enumerate(test_loader_LMC):
@@ -337,6 +329,10 @@ def trainAndValidate(model,
                     weightDecay=1e-5
                     ):
     print("Training and validating ", tensorboardDatasetName)
+    print("Learning rate:          ", learningRate)
+    print("numEpochs:              ", numEpochs)
+    print("weightDecay:            ", weightDecay)
+
     # optimiser = optim.SGD(
     optimiser = optim.Adam(
         params=model.parameters(),
@@ -370,8 +366,8 @@ def trainAndValidate(model,
 
             train_accuracy = accuracy(logits, target)*100
             
-            summary_writer.add_scalar(('loss/train-'+tensorboardDatasetName), loss.item(), epoch)
-            summary_writer.add_scalar(('accuracy/train-'+tensorboardDatasetName), train_accuracy, epoch)
+            summary_writer.add_scalar(('loss/train-'+tensorboardDatasetName), loss.item(), epoch)   ##per batch training loss
+            summary_writer.add_scalar(('accuracy/train-'+tensorboardDatasetName), train_accuracy, epoch)  ##per batch training accuracy
             myAcc = train_accuracy
 
         print(myLoss)
@@ -379,17 +375,15 @@ def trainAndValidate(model,
 
         #####TESTING LOOP#######
         # Turn off dropout and batchnorm layers
-        model.eval() 
-
-        numTestBatch = len(testData)
-        totalLoss    = 0
-
-        # logitFilenameDictionary = {}
-        # targetFilenameDictionary = {}
+        model.eval()
 
         #####TEST LOOP#######
         # Don't need to track grad
         with torch.no_grad():
+
+            numTestBatch = len(testData)
+            totalLoss    = 0
+            
             softmax = nn.Softmax(dim=0)
             # For each batch in test set
             for i,(input,target,filenames) in enumerate(testData):
@@ -397,7 +391,7 @@ def trainAndValidate(model,
                 target = target.to(device)
                 logits = model(input)
                 loss = criterion(logits,target) 
-                totalLoss += loss
+                totalLoss += loss.item()
 
                 #Construct two dictionaries: 
                 #   logitFilenameDictionary:  map filename -> all logits for this filename, 
@@ -421,11 +415,14 @@ def trainAndValidate(model,
                 
             #average test loss for this epoch
             averageLoss = float(totalLoss) / float(numTestBatch)
-            summary_writer.add_scalar(('loss/test-'+tensorboardDatasetName), averageLoss, epoch)
+            print("numtestbatch",numTestBatch)
+            print("totalloss  ",totalLoss)
+            print("averageloss", averageLoss)
+            summary_writer.add_scalar(('loss/test-'+tensorboardDatasetName), averageLoss, epoch)  #per epoch test loss
 
             #calculating accuracy using the dictionaries
-            correctPredictions = 0
-            numberOfFiles = len(targetFilenameDictionary)
+            # correctPredictions = 0
+            # numberOfFiles = len(targetFilenameDictionary)
             correctPredsPerClass = torch.zeros(10).to(device)
             noFilesPerClass = torch.zeros(10).to(device)
             # count the number of files per class
@@ -447,7 +444,7 @@ def trainAndValidate(model,
                 
                 #if the overall prediction (based on the summed logits) for this file is correct, increment correct predictions    
                 if(logitsSum.argmax(dim=-1)) == targetFilenameDictionary[filename]:
-                    correctPredictions += 1
+                    # correctPredictions += 1
 
                     correctPredsPerClass[targetFilenameDictionary[filename]] += 1
             
@@ -458,7 +455,7 @@ def trainAndValidate(model,
             aveAcc = (torch.sum(testAccPerClass) / 10)
             print("Average accuracy of",tensorboardDatasetName,"=",aveAcc)
 
-            summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), aveAcc, epoch)
+            summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), aveAcc, epoch)  ##per epoch test accuracy
 
 
 
@@ -492,7 +489,8 @@ def PrintModelParameters(model):
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.0005, 1e-5)
+# trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.000001, 1e-5)
 ## print(LMC_logitFilenameDictionary)
 ## print(LMC_targetFilenameDictionary)
 
