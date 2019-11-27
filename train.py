@@ -113,7 +113,7 @@ class LMC_Net(nn.Module):
         self.norm2 = nn.BatchNorm2d(num_features = 32)
 
         # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
-        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
+        self.pool1 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
         self.conv3 = nn.Conv2d(
@@ -161,7 +161,7 @@ class LMC_Net(nn.Module):
         x = self.norm2(x)
         x = F.relu(x)
         # x = self.dropout3(x)
-        x = self.pool6(x)   ###here is the uncertainty
+        x = self.pool1(x)   ###here is the uncertainty
         x = self.dropout1(x)
 
         ##3
@@ -223,7 +223,7 @@ class MLMC_Net(nn.Module):
         self.norm2 = nn.BatchNorm2d(num_features = 32)
 
         # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
-        self.pool6 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
+        self.pool1 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
         self.conv3 = nn.Conv2d(
@@ -270,7 +270,7 @@ class MLMC_Net(nn.Module):
         x = self.norm2(x)
         x = F.relu(x)
         # x = self.dropout3(x)
-        x = self.pool6(x)   ###here is the uncertainty
+        x = self.pool1(x)   ###here is the uncertainty
         x = self.dropout1(x)
 
         ##3
