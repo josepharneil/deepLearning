@@ -489,7 +489,7 @@ def PrintModelParameters(model):
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.0005, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.000001, 1e-5)
 ## print(LMC_logitFilenameDictionary)
 ## print(LMC_targetFilenameDictionary)
