@@ -510,7 +510,7 @@ def TSCNN():
         logitsList = LMC_logitFilenameDictionary[filename] #all logits for this filename (for the clips corresponding to this file)
         
         #next few lines are to sum the logits for this filename, so that argmax can be called
-        #logits sum is the elementwise sum of logits 
+        #logits sum is the elementwise sum of logits
         logitsSum = torch.zeros(10).to(device)
         for logits in logitsList:
             logitsSum += softmax(logits)
@@ -566,6 +566,16 @@ MLMC_model = MLMC_Net().to(device)
 trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
 
 
+###### Once all are trained, save them
+# https://pytorch.org/tutorials/beginner/saving_loading_models.html
+torch.save(LMC_model.state_dict() , "lmc.pt")
+torch.save(MC_model.state_dict()  , "mc.pt")
+torch.save(MLMC_model.state_dict(), "mlmc.pt")
+
+
+# model = TheModelClass(*args, **kwargs)
+# model.load_state_dict(torch.load(PATH))
+# model.eval()
 
 # model = MLMC_Net().to(device)
 # item = next(iter(train_loader_MLMC))
