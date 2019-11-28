@@ -54,15 +54,15 @@ test_loader_MC = torch.utils.data.DataLoader(
     batch_size=32, shuffle=False,
     num_workers=8, pin_memory=True)
 
-train_loader_MLMC = torch.utils.data.DataLoader(
-      UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MLMC'),
-      batch_size=32, shuffle=True,
-      num_workers=8, pin_memory=True)
+# train_loader_MLMC = torch.utils.data.DataLoader(
+    #   UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MLMC'),
+    #   batch_size=32, shuffle=True,
+    #   num_workers=8, pin_memory=True)
 
-test_loader_MLMC = torch.utils.data.DataLoader(
-     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
-     batch_size=32, shuffle=False,
-     num_workers=8, pin_memory=True)
+# test_loader_MLMC = torch.utils.data.DataLoader(
+    #  UrbanSound8KDataset('UrbanSound8K_test.pkl', 'MLMC'),
+    #  batch_size=32, shuffle=False,
+    #  num_workers=8, pin_memory=True)
 
 # result = 0
 # for i,(input,target,filenames) in enumerate(test_loader_MLMC):
@@ -555,22 +555,22 @@ def TSCNN():
     print("Average accuracy for TSCNN:",averageAccuracy.item())
 
 
-TSCNN()
+# TSCNN()
 
 
 ############### MLMC ###############
 
-MLMC_logitFilenameDictionary = {}
-MLMC_targetFilenameDictionary = {}
-MLMC_model = MLMC_Net().to(device)
-trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
+# MLMC_logitFilenameDictionary = {}
+# MLMC_targetFilenameDictionary = {}
+# MLMC_model = MLMC_Net().to(device)
+# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
 
 
 ###### Once all are trained, save them
 # https://pytorch.org/tutorials/beginner/saving_loading_models.html
 torch.save(LMC_model.state_dict() , "lmc.pt")
 torch.save(MC_model.state_dict()  , "mc.pt")
-torch.save(MLMC_model.state_dict(), "mlmc.pt")
+# torch.save(MLMC_model.state_dict(), "mlmc.pt")
 
 
 # model = TheModelClass(*args, **kwargs)
