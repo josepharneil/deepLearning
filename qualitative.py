@@ -7,7 +7,7 @@ from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from dataset import UrbanSound8KDataset
 
@@ -294,14 +294,16 @@ class MLMC_Net(nn.Module):
 # plt.savefig('output.png')
 
 def saveImage(inputJ, outputName):
-  input2d = np.squeeze(inputJ, axis=0)
-  plt.imshow(input2d.numpy())
-  plt.savefig(outputName)
+    inputJ = inputJ.cpu()
+    inputJ = inputJ.numpy()
+    input2d = np.squeeze(inputJ, axis=0)
+    input2d = np.squeeze(input2d, axis=0)
+    # plt.imshow(input2d.numpy())
+    plt.imshow(input2d)
+    plt.savefig(outputName)
 
-# make a tscnn
-
-LMC_model = LMC_Net()
-MC_model = LMC_Net()
+LMC_model = LMC_Net().to(device)
+MC_model = LMC_Net().to(device)
 
 LMC_model.load_state_dict(torch.load('lmc.pt'))
 MC_model.load_state_dict(torch.load('mc.pt'))
@@ -318,39 +320,55 @@ foundOutput4 = False
 softmax = nn.Softmax(dim=0)
 #for each batch
 for i,(input,target,filenames) in enumerate(test_loader_LMC):
+    # print(input.shape)
   #for each image
-  for j in range(0,input.size):
-    im = input[j]
-    targ = target[j]
-    LMC_logits = LMC_model(im)
-    MC_logits = MC_model(im)
-    LMC_prediction = torch.argmax(LMC_logits,dim=-1)
-    MC_prediction = torch.argmax(MC_logits,dim = -1)
-    TSCNN_prediction = torch.argmax((softmax(MC_logits)+softmax(LMC_logits)),dim=-1)
-    LMC_isCorrect   = (LMC_prediction   == targ)
-    MC_isCorrect    = (MC_prediction    == targ)
-    TSCNN_isCorrect = (TSCNN_prediction == targ)
-    ###output 1 LMC and MC correct
-    if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
-      saveImage(im,'out1.png')
-      foundOutput1 = True
-    ###output 2.1 LMC correct and MC incorrect
-    if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
-        saveImage(im,'out21.png')
-        foundOutput21 = True
-    ###output 2.2 LMC incorrect and MC correct
-    if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
-        saveImage(im,'out22.png')
-        foundOutput22 = True
-    ###output 3 TSCNN correct, LMC incorrect, MC incorrect
-    if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
-        saveImage(im,'out3.png')
-        foundOutput3 = True
-    ###output 4 all incorrect
-    if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
-        saveImage(im,'out4.png')
-        foundOutput4 = True
+    for j in range(0,input.shape[0]):
+        im = input[j].to(device)
+        im.unsqueeze_(0)
+        # print(im.shape)
+        # im = input[i].to(device)
+        targ = target[j].to(device)
+        targ.unsqueeze_(0)
+        # targ = target[i].to(device)
+        LMC_logits = LMC_model(im)
+        MC_logits = MC_model(im)
+        LMC_prediction = torch.argmax(LMC_logits,dim=-1).to(device)
+        MC_prediction = torch.argmax(MC_logits,dim = -1).to(device)
+        TSCNN_prediction = torch.argmax((softmax(MC_logits)+softmax(LMC_logits)),dim=-1)
+        # print(targ)
+        # print(LMC_prediction)
+        # LMC_isCorrect   = (LMC_prediction   == targ)
+        # MC_isCorrect    = (MC_prediction    == targ)
+        # TSCNN_isCorrect = (TSCNN_prediction == targ)
+        LMC_isCorrect = (torch.equal(LMC_prediction, targ))
+        MC_isCorrect = (torch.equal(MC_prediction, targ))
+        TSCNN_isCorrect = (torch.equal(TSCNN_prediction, targ))
+        # print(LMC_isCorrect)
+        ###output 1 LMC and MC correct
+        if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
+            saveImage(im,'out1.png')
+            foundOutput1 = True
+        ###output 2.1 LMC correct and MC incorrect
+        if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
+            saveImage(im,'out21.png')
+            foundOutput21 = True
+        ###output 2.2 LMC incorrect and MC correct
+        if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
+            saveImage(im,'out22.png')
+            foundOutput22 = True
+        ###output 3 TSCNN correct, LMC incorrect, MC incorrect
+        if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
+            saveImage(im,'out3.png')
+            foundOutput3 = True
+        ###output 4 all incorrect
+        if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
+            saveImage(im,'out4.png')
+            foundOutput4 = True
         
+    if(foundOutput1 and foundOutput21 and foundOutput22 and foundOutput3 and foundOutput4):
+        print("found all: breaking")
+        break
+            
 if(foundOutput1 == False):  print("Output 1  not found: No case where both LMC and MC are correct")
 if(foundOutput21 == False): print("Output 21 not found: No case where LMC is correct, and MC is incorrect")
 if(foundOutput22 == False): print("Output 22 not found: No case where LMC is incorrect, and MC is correct")
