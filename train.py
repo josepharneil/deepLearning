@@ -7,9 +7,25 @@ from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 from dataset import UrbanSound8KDataset
+
+LMC_train_loss = []
+LMC_test_loss = []
+LMC_train_accuracy = []
+LMC_test_accuracy = []
+
+MLMC_train_loss = []
+MLMC_test_loss = []
+MLMC_train_accuracy = []
+MLMC_test_accuracy = []
+
+MC_train_loss = []
+MC_test_loss = []
+MC_train_accuracy = []
+MC_test_accuracy = []
+
 
 summary_writer = SummaryWriter('logs',flush_secs=5)
 
@@ -366,6 +382,20 @@ def trainAndValidate(model,
 
             train_accuracy = accuracy(logits, target)*100
             
+            ########################matPlotLib###########################################
+            if(tensorboardDatasetName == "MC"):
+                MC_train_accuracy.append(train_accuracy)
+                MC_train_loss.append(loss.item())
+
+            if(tensorboardDatasetName == "LMC"):
+                LMC_train_accuracy.append(train_accuracy)
+                LMC_train_loss.append(loss.item())
+
+            if(tensorboardDatasetName == "MLMC"):
+                MLMC_train_accuracy.append(train_accuracy)
+                MLMC_train_loss.append(loss.item())
+            #############################################################################
+
             summary_writer.add_scalar(('loss/train-'+tensorboardDatasetName), loss.item(), epoch)   ##per batch training loss
             summary_writer.add_scalar(('accuracy/train-'+tensorboardDatasetName), train_accuracy, epoch)  ##per batch training accuracy
             myAcc = train_accuracy
@@ -387,7 +417,7 @@ def trainAndValidate(model,
             softmax = nn.Softmax(dim=0)
             # For each batch in test set
             for i,(input,target,filenames) in enumerate(testData):
-                input  = input.to(device)
+                input  = input.to(device)   
                 target = target.to(device)
                 logits = model(input)
                 loss = criterion(logits,target) 
@@ -489,7 +519,7 @@ def PrintModelParameters(model):
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 10, 0.001, 1e-5)
 # trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.000001, 1e-5)
 ## print(LMC_logitFilenameDictionary)
 ## print(LMC_targetFilenameDictionary)
@@ -497,8 +527,8 @@ trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilename
 ############### MC ###############
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
-MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
+# MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
+# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
 ## print(MC_logitFilenameDictionary)
 ## print(MC_targetFilenameDictionary)
 
@@ -555,15 +585,15 @@ def TSCNN():
     print("Average accuracy for TSCNN:",averageAccuracy.item())
 
 
-TSCNN()
+# TSCNN()
 
 
 ############### MLMC ###############
 
-MLMC_logitFilenameDictionary = {}
-MLMC_targetFilenameDictionary = {}
-MLMC_model = MLMC_Net().to(device)
-trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
+# MLMC_logitFilenameDictionary = {}
+# MLMC_targetFilenameDictionary = {}
+# MLMC_model = MLMC_Net().to(device)
+# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
 
 
 
