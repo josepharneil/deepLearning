@@ -488,6 +488,24 @@ def trainAndValidate(model,
             summary_writer.add_scalar(('accuracy/test-'+tensorboardDatasetName), aveAcc, epoch)  ##per epoch test accuracy
 
 
+            ########################matPlotLib###########################################
+            if(tensorboardDatasetName == "MC"):
+                MC_test_accuracy.append(aveAcc)
+                MC_test_loss.append(averageLoss)
+
+            if(tensorboardDatasetName == "LMC"):
+                LMC_test_accuracy.append(aveAcc)
+                LMC_test_loss.append(averageLoss)
+
+            if(tensorboardDatasetName == "MLMC"):
+                MLMC_test_accuracy.append(aveAcc)
+                MLMC_test_loss.append(averageLoss)
+            #############################################################################
+
+
+            
+
+
 
     summary_writer.close()
 
@@ -603,7 +621,65 @@ def TSCNN():
 # print(model(item[0]).shape)
 # print()
 
+
+
+
+
 #endregion Models
+
+
+###########################matPlotLib##############################
+# LMC:
+plt.plot(LMC_train_loss)
+plt.savefig("figs/LMC_train_loss")
+plt.clf()
+plt.plot(LMC_test_loss)
+plt.savefig("figs/LMC_test_loss")
+plt.clf()
+plt.plot(LMC_train_accuracy)
+plt.savefig("figs/LMC_train_accuracy")
+plt.clf()
+plt.plot(LMC_test_accuracy) 
+plt.savefig("figs/LMC_test_accuracy")
+plt.clf()
+
+# MLMC
+plt.plot(MLMC_train_loss)
+plt.savefig("figs/MLMC_train_loss")
+plt.clf()
+plt.plot(MLMC_test_loss)
+plt.savefig("figs/MLMC_test_loss")
+plt.clf()
+plt.plot(MLMC_train_accuracy)
+plt.savefig("figs/MLMC_train_accuracy")
+plt.clf()
+plt.plot(MLMC_test_accuracy)
+plt.savefig("figs/MLMC_test_accuracy")
+plt.clf()
+
+# MC
+plt.plot(MC_train_loss)
+plt.savefig("figs/MC_train_loss")
+plt.clf()
+plt.plot(MC_test_loss)
+plt.savefig("figs/MC_test_loss")
+plt.clf()
+plt.plot(MC_train_accuracy)
+plt.savefig("figs/MC_train_accuracy")
+plt.clf()
+plt.plot(MC_test_accuracy)
+plt.savefig("figs/MC_test_accuracy")
+plt.clf()
+
+print(len(LMC_train_loss))
+print((len(LMC_test_loss))
+
+
+
+
+###################################################################
+
+
 
 
 
