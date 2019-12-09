@@ -537,7 +537,7 @@ def PrintModelParameters(model):
 LMC_logitFilenameDictionary = {}
 LMC_targetFilenameDictionary = {}
 LMC_model = LMC_Net().to(device)
-trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 10, 0.001, 1e-5)
+trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.001, 1e-5)
 # trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilenameDictionary, LMC_targetFilenameDictionary, 'LMC', 50, 0.000001, 1e-5)
 ## print(LMC_logitFilenameDictionary)
 ## print(LMC_targetFilenameDictionary)
@@ -545,8 +545,8 @@ trainAndValidate(LMC_model, train_loader_LMC, test_loader_LMC, LMC_logitFilename
 ############### MC ###############
 MC_logitFilenameDictionary = {}
 MC_targetFilenameDictionary = {}
-# MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
-# trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
+MC_model = LMC_Net().to(device)  ######MC_Model has identical architecture to LMC_Model, wo we instantiate the same network class
+trainAndValidate(MC_model, train_loader_MC, test_loader_MC, MC_logitFilenameDictionary, MC_targetFilenameDictionary, 'MC', 50, 0.001, 1e-5)
 ## print(MC_logitFilenameDictionary)
 ## print(MC_targetFilenameDictionary)
 
@@ -603,15 +603,15 @@ def TSCNN():
     print("Average accuracy for TSCNN:",averageAccuracy.item())
 
 
-# TSCNN()
+TSCNN()
 
 
 ############### MLMC ###############
 
-# MLMC_logitFilenameDictionary = {}
-# MLMC_targetFilenameDictionary = {}
-# MLMC_model = MLMC_Net().to(device)
-# trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
+MLMC_logitFilenameDictionary = {}
+MLMC_targetFilenameDictionary = {}
+MLMC_model = MLMC_Net().to(device)
+trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFilenameDictionary,MLMC_targetFilenameDictionary, 'MLMC',50, 0.001, 1e-5)
 
 
 
@@ -672,7 +672,7 @@ plt.savefig("figs/MC_test_accuracy")
 plt.clf()
 
 print(len(LMC_train_loss))
-print((len(LMC_test_loss))
+print(len(LMC_test_loss ))
 
 
 
