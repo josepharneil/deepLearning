@@ -7,3 +7,7 @@ UrbanSound8K_train.pkl
 .vscode
 DLCoursework.code-workspace
 __pycache__
+final/models/lmc.pt
+final/models/mc.pt
+final/models/mlmc.pt
+__pycache__
