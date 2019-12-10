@@ -305,8 +305,8 @@ def saveImage(inputJ, outputName):
 LMC_model = LMC_Net().to(device)
 MC_model = LMC_Net().to(device)
 
-LMC_model.load_state_dict(torch.load('lmc.pt'))
-MC_model.load_state_dict(torch.load('mc.pt'))
+LMC_model.load_state_dict(torch.load('models/lmc.pt'))
+MC_model.load_state_dict(torch.load('models/mc.pt'))
 
 LMC_model.eval()
 MC_model.eval()
@@ -346,23 +346,23 @@ for i,(input,target,filenames) in enumerate(test_loader_LMC):
         # print(LMC_isCorrect)
         ###output 1 LMC and MC correct
         if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
-            saveImage(im,'out1.png')
+            saveImage(im,'outs/out1.png')
             foundOutput1 = True
         ###output 2.1 LMC correct and MC incorrect
         if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
-            saveImage(im,'out21.png')
+            saveImage(im,'outs/out21.png')
             foundOutput21 = True
         ###output 2.2 LMC incorrect and MC correct
         if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
-            saveImage(im,'out22.png')
+            saveImage(im,'outs/out22.png')
             foundOutput22 = True
         ###output 3 TSCNN correct, LMC incorrect, MC incorrect
         if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
-            saveImage(im,'out3.png')
+            saveImage(im,'outs/out3.png')
             foundOutput3 = True
         ###output 4 all incorrect
         if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
-            saveImage(im,'out4.png')
+            saveImage(im,'outs/out4.png')
             foundOutput4 = True
         
     if(foundOutput1 and foundOutput21 and foundOutput22 and foundOutput3 and foundOutput4):

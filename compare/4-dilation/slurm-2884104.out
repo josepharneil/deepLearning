@@ -1,0 +1,1375 @@
+cuda is available:  True
+Training and validating  LMC
+Learning rate:           0.001
+numEpochs:               50
+weightDecay:             1e-05
+0
+0.9156591892242432
+66.66666666666666
+numtestbatch 169
+totalloss   190.29717887938023
+averageloss 1.126018809937161
+Per test accuracy of LMC = tensor([0.8500, 0.6061, 0.8200, 0.5700, 0.3400, 0.5054, 0.9688, 0.9688, 0.5783,
+        0.6400], device='cuda:0')
+Average accuracy of LMC = tensor(0.6847, device='cuda:0')
+1
+0.37436410784721375
+77.77777777777779
+numtestbatch 169
+totalloss   170.04550609737635
+averageloss 1.0061864266116944
+Per test accuracy of LMC = tensor([0.8600, 0.6970, 0.6700, 0.6200, 0.5400, 0.5054, 0.8125, 0.9792, 0.5783,
+        0.8300], device='cuda:0')
+Average accuracy of LMC = tensor(0.7092, device='cuda:0')
+2
+1.4139035940170288
+77.77777777777779
+numtestbatch 169
+totalloss   155.54659237153828
+averageloss 0.9203940377014099
+Per test accuracy of LMC = tensor([0.8500, 0.7576, 0.6000, 0.6600, 0.6000, 0.5376, 0.9062, 1.0000, 0.5663,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7368, device='cuda:0')
+3
+1.0971510410308838
+77.77777777777779
+numtestbatch 169
+totalloss   165.38071733061224
+averageloss 0.9785841262166405
+Per test accuracy of LMC = tensor([0.8600, 0.8788, 0.5900, 0.7200, 0.7000, 0.5591, 0.9375, 1.0000, 0.5904,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7746, device='cuda:0')
+4
+0.33096209168434143
+88.88888888888889
+numtestbatch 169
+totalloss   180.46006865985692
+averageloss 1.0678110571589166
+Per test accuracy of LMC = tensor([0.8600, 0.8485, 0.6300, 0.7300, 0.7800, 0.5591, 0.9375, 1.0000, 0.5783,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7833, device='cuda:0')
+5
+0.6076675057411194
+77.77777777777779
+numtestbatch 169
+totalloss   202.86258314270526
+averageloss 1.2003703144538773
+Per test accuracy of LMC = tensor([0.8300, 0.8485, 0.7200, 0.7500, 0.8000, 0.5591, 0.9375, 1.0000, 0.5783,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7913, device='cuda:0')
+6
+0.35438796877861023
+88.88888888888889
+numtestbatch 169
+totalloss   194.98991565406322
+averageloss 1.1537864831601374
+Per test accuracy of LMC = tensor([0.7700, 0.8788, 0.7300, 0.7600, 0.8200, 0.5269, 0.9375, 1.0000, 0.5904,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7914, device='cuda:0')
+7
+0.20900171995162964
+88.88888888888889
+numtestbatch 169
+totalloss   175.5630170656368
+averageloss 1.0388344205067268
+Per test accuracy of LMC = tensor([0.7200, 0.9091, 0.7400, 0.7700, 0.8200, 0.5484, 0.9375, 0.9896, 0.6145,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7949, device='cuda:0')
+8
+0.007292959373444319
+100.0
+numtestbatch 169
+totalloss   193.49221081403084
+averageloss 1.1449243243433778
+Per test accuracy of LMC = tensor([0.6800, 0.9091, 0.7500, 0.7600, 0.8300, 0.5376, 0.9375, 0.9896, 0.6145,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7918, device='cuda:0')
+9
+0.017673995345830917
+100.0
+numtestbatch 169
+totalloss   215.13809592276812
+averageloss 1.2730064847501072
+Per test accuracy of LMC = tensor([0.6300, 0.9394, 0.7600, 0.7600, 0.8300, 0.5269, 0.9375, 1.0000, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7932, device='cuda:0')
+10
+0.0006535318098030984
+100.0
+numtestbatch 169
+totalloss   232.72671133093536
+averageloss 1.3770811321357121
+Per test accuracy of LMC = tensor([0.6000, 0.9697, 0.7700, 0.7600, 0.8300, 0.5269, 0.9375, 1.0000, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7945, device='cuda:0')
+11
+0.039747461676597595
+100.0
+numtestbatch 169
+totalloss   193.64653773233294
+averageloss 1.145837501374751
+Per test accuracy of LMC = tensor([0.5900, 0.9697, 0.7700, 0.7600, 0.8200, 0.5161, 0.9375, 1.0000, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7914, device='cuda:0')
+12
+0.08696173876523972
+100.0
+numtestbatch 169
+totalloss   231.53341048629954
+averageloss 1.3700201803923049
+Per test accuracy of LMC = tensor([0.5800, 0.9697, 0.7800, 0.7600, 0.8400, 0.5161, 0.9375, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7924, device='cuda:0')
+13
+0.15201586484909058
+88.88888888888889
+numtestbatch 169
+totalloss   226.11573243280873
+averageloss 1.337962913803602
+Per test accuracy of LMC = tensor([0.5800, 0.9394, 0.7900, 0.7600, 0.8300, 0.5054, 0.9375, 0.9896, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7880, device='cuda:0')
+14
+0.9823510646820068
+77.77777777777779
+numtestbatch 169
+totalloss   229.9288865835697
+averageloss 1.360525956115797
+Per test accuracy of LMC = tensor([0.5700, 0.9394, 0.7900, 0.7500, 0.8300, 0.5054, 0.9375, 0.9896, 0.6386,
+        0.9200], device='cuda:0')
+Average accuracy of LMC = tensor(0.7870, device='cuda:0')
+15
+0.0010579427471384406
+100.0
+numtestbatch 169
+totalloss   241.86663165863138
+averageloss 1.4311635009386472
+Per test accuracy of LMC = tensor([0.5700, 0.9394, 0.7800, 0.7500, 0.8400, 0.5054, 0.9375, 0.9896, 0.6265,
+        0.9200], device='cuda:0')
+Average accuracy of LMC = tensor(0.7858, device='cuda:0')
+16
+0.27318254113197327
+88.88888888888889
+numtestbatch 169
+totalloss   272.1919246085454
+averageloss 1.6106031041925761
+Per test accuracy of LMC = tensor([0.5700, 0.9394, 0.8000, 0.7600, 0.8400, 0.5054, 0.9375, 0.9896, 0.6265,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7868, device='cuda:0')
+17
+0.01285327784717083
+100.0
+numtestbatch 169
+totalloss   257.53625052189454
+averageloss 1.523883139182808
+Per test accuracy of LMC = tensor([0.5600, 0.9394, 0.7900, 0.7600, 0.8400, 0.5054, 0.9375, 0.9896, 0.6265,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7848, device='cuda:0')
+18
+0.006101807113736868
+100.0
+numtestbatch 169
+totalloss   267.5917814387649
+averageloss 1.583383322122869
+Per test accuracy of LMC = tensor([0.5600, 0.9394, 0.8100, 0.7700, 0.8400, 0.5054, 0.9375, 0.9896, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7900, device='cuda:0')
+19
+0.0344509556889534
+100.0
+numtestbatch 169
+totalloss   261.84321441687644
+averageloss 1.5493681326442392
+Per test accuracy of LMC = tensor([0.5500, 0.9394, 0.8200, 0.7700, 0.8300, 0.4946, 0.9375, 0.9896, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7880, device='cuda:0')
+20
+0.2119339108467102
+88.88888888888889
+numtestbatch 169
+totalloss   220.11398628726602
+averageloss 1.302449623001574
+Per test accuracy of LMC = tensor([0.5500, 0.9394, 0.8200, 0.7700, 0.8300, 0.4946, 0.9375, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7892, device='cuda:0')
+21
+0.037026286125183105
+100.0
+numtestbatch 169
+totalloss   231.80691610719077
+averageloss 1.3716385568472826
+Per test accuracy of LMC = tensor([0.5500, 0.9394, 0.8400, 0.7700, 0.8300, 0.4946, 0.9375, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7912, device='cuda:0')
+22
+0.0015527672367170453
+100.0
+numtestbatch 169
+totalloss   236.52093838807195
+averageloss 1.3995321798110767
+Per test accuracy of LMC = tensor([0.5500, 0.9394, 0.8500, 0.7800, 0.8300, 0.4946, 0.9375, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7932, device='cuda:0')
+23
+0.05949939787387848
+100.0
+numtestbatch 169
+totalloss   238.07702950574458
+averageloss 1.4087398195606189
+Per test accuracy of LMC = tensor([0.5500, 0.9394, 0.8500, 0.7900, 0.8300, 0.4946, 0.9375, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7942, device='cuda:0')
+24
+0.04762323573231697
+100.0
+numtestbatch 169
+totalloss   275.55653406865895
+averageloss 1.6305120359092244
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8500, 0.7900, 0.8300, 0.4946, 0.9688, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7923, device='cuda:0')
+25
+0.3626563251018524
+88.88888888888889
+numtestbatch 169
+totalloss   250.8519400440855
+averageloss 1.4843310061780206
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8400, 0.7900, 0.8300, 0.5161, 0.9688, 0.9896, 0.6386,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7922, device='cuda:0')
+26
+0.0017816754989326
+100.0
+numtestbatch 169
+totalloss   267.55087605072185
+averageloss 1.583141278406638
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8500, 0.7800, 0.8300, 0.5161, 0.9688, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7934, device='cuda:0')
+27
+0.04160955175757408
+100.0
+numtestbatch 169
+totalloss   249.02887573465705
+averageloss 1.4735436434003375
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8400, 0.7800, 0.8300, 0.5054, 0.9688, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7913, device='cuda:0')
+28
+0.024415545165538788
+100.0
+numtestbatch 169
+totalloss   294.5971406339668
+averageloss 1.743178346946549
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.8000, 0.8300, 0.5054, 0.9688, 0.9896, 0.6627,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7965, device='cuda:0')
+29
+0.0067515904083848
+100.0
+numtestbatch 169
+totalloss   258.9516814346425
+averageloss 1.5322584700274706
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.8000, 0.8200, 0.5054, 0.9688, 0.9896, 0.6747,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7967, device='cuda:0')
+30
+0.019907845184206963
+100.0
+numtestbatch 169
+totalloss   268.0848590331152
+averageloss 1.5863009410243503
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.7900, 0.8200, 0.5054, 0.9375, 0.9896, 0.6627,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7914, device='cuda:0')
+31
+0.18275468051433563
+88.88888888888889
+numtestbatch 169
+totalloss   283.0275010310579
+averageloss 1.674718941012177
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.7900, 0.8200, 0.5054, 0.9375, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7902, device='cuda:0')
+32
+0.00305133406072855
+100.0
+numtestbatch 169
+totalloss   274.9240989817772
+averageloss 1.6267698164602202
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8700, 0.8000, 0.8200, 0.5054, 0.9375, 0.9896, 0.6506,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7912, device='cuda:0')
+33
+0.0019037458114326
+100.0
+numtestbatch 169
+totalloss   260.5354427280836
+averageloss 1.5416298386277134
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8700, 0.8100, 0.8200, 0.5054, 0.9375, 0.9896, 0.6506,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7952, device='cuda:0')
+34
+0.3607405722141266
+88.88888888888889
+numtestbatch 169
+totalloss   342.9369940474862
+averageloss 2.029212982529504
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8700, 0.8100, 0.8200, 0.5054, 0.9375, 0.9896, 0.6506,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7922, device='cuda:0')
+35
+0.02018033154308796
+100.0
+numtestbatch 169
+totalloss   307.230605580844
+averageloss 1.8179325774014437
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8700, 0.8100, 0.8200, 0.5269, 0.9375, 0.9896, 0.6627,
+        0.8900], device='cuda:0')
+Average accuracy of LMC = tensor(0.7956, device='cuda:0')
+36
+0.003400643588975072
+100.0
+numtestbatch 169
+totalloss   275.02088573016226
+averageloss 1.6273425191133861
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8700, 0.8100, 0.8200, 0.5269, 0.9375, 0.9896, 0.6627,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7996, device='cuda:0')
+37
+0.11436881124973297
+88.88888888888889
+numtestbatch 169
+totalloss   299.8886619620025
+averageloss 1.7744891240355178
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8700, 0.8100, 0.8200, 0.5376, 0.9688, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.8026, device='cuda:0')
+38
+0.1536102294921875
+88.88888888888889
+numtestbatch 169
+totalloss   275.6718798195943
+averageloss 1.6311945551455285
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.8000, 0.8200, 0.5376, 0.9688, 0.9896, 0.6506,
+        0.9000], device='cuda:0')
+Average accuracy of LMC = tensor(0.7976, device='cuda:0')
+39
+0.06966736912727356
+100.0
+numtestbatch 169
+totalloss   251.62008488668653
+averageloss 1.4888762419330563
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8600, 0.8000, 0.8200, 0.5376, 0.9688, 0.9896, 0.6627,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7998, device='cuda:0')
+40
+0.08741559088230133
+88.88888888888889
+numtestbatch 169
+totalloss   312.55291931470856
+averageloss 1.8494255580751986
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8500, 0.8000, 0.8200, 0.5376, 0.9688, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7976, device='cuda:0')
+41
+0.07394424080848694
+100.0
+numtestbatch 169
+totalloss   300.9374940810958
+averageloss 1.7806952312490876
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8500, 0.8000, 0.8200, 0.5376, 0.9688, 0.9896, 0.6506,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.8006, device='cuda:0')
+42
+0.0009766684379428625
+100.0
+numtestbatch 169
+totalloss   329.7401147343335
+averageloss 1.9511249392564112
+Per test accuracy of LMC = tensor([0.5400, 0.9091, 0.8500, 0.7900, 0.8100, 0.5269, 0.9688, 0.9896, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7933, device='cuda:0')
+43
+0.013598865829408169
+100.0
+numtestbatch 169
+totalloss   311.08701163658407
+averageloss 1.840751548145468
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8500, 0.7900, 0.8100, 0.5269, 0.9688, 0.9896, 0.6386,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7963, device='cuda:0')
+44
+0.0002444055280648172
+100.0
+numtestbatch 169
+totalloss   289.56351194367744
+averageloss 1.7133935617969078
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8500, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7962, device='cuda:0')
+45
+0.0019407272338867188
+100.0
+numtestbatch 169
+totalloss   261.8180860063294
+averageloss 1.5492194438244342
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8500, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7962, device='cuda:0')
+46
+0.25428715348243713
+88.88888888888889
+numtestbatch 169
+totalloss   307.82432915456593
+averageloss 1.821445734642402
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8500, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7962, device='cuda:0')
+47
+0.03899460285902023
+100.0
+numtestbatch 169
+totalloss   326.60088899813127
+averageloss 1.9325496390421968
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8600, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7972, device='cuda:0')
+48
+0.020971668884158134
+100.0
+numtestbatch 169
+totalloss   255.65946641899063
+averageloss 1.5127779078046784
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8600, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7972, device='cuda:0')
+49
+0.005464222747832537
+100.0
+numtestbatch 169
+totalloss   342.3098858706653
+averageloss 2.0255022832583744
+Per test accuracy of LMC = tensor([0.5400, 0.9394, 0.8800, 0.7900, 0.8100, 0.5376, 0.9688, 0.9896, 0.6265,
+        0.9100], device='cuda:0')
+Average accuracy of LMC = tensor(0.7992, device='cuda:0')
+Training and validating  MC
+Learning rate:           0.001
+numEpochs:               50
+weightDecay:             1e-05
+0
+0.8212178945541382
+55.55555555555556
+numtestbatch 169
+totalloss   210.82189473509789
+averageloss 1.2474668327520584
+Per test accuracy of MC = tensor([0.5600, 0.0303, 0.8600, 0.6100, 0.6400, 0.8387, 0.4375, 0.6667, 0.5542,
+        0.4800], device='cuda:0')
+Average accuracy of MC = tensor(0.5677, device='cuda:0')
+1
+0.779620885848999
+77.77777777777779
+numtestbatch 169
+totalloss   172.31520868837833
+averageloss 1.01961661945786
+Per test accuracy of MC = tensor([0.5100, 0.2727, 0.8700, 0.6800, 0.6600, 0.7634, 0.4375, 0.8646, 0.5904,
+        0.7400], device='cuda:0')
+Average accuracy of MC = tensor(0.6389, device='cuda:0')
+2
+0.3186049163341522
+88.88888888888889
+numtestbatch 169
+totalloss   193.8193903490901
+averageloss 1.14686029792361
+Per test accuracy of MC = tensor([0.5700, 0.3333, 0.9000, 0.7100, 0.6800, 0.7634, 0.4688, 0.8333, 0.5783,
+        0.6800], device='cuda:0')
+Average accuracy of MC = tensor(0.6517, device='cuda:0')
+3
+0.3903598189353943
+88.88888888888889
+numtestbatch 169
+totalloss   181.00791748054326
+averageloss 1.0710527661570606
+Per test accuracy of MC = tensor([0.5700, 0.3333, 0.9100, 0.6900, 0.7100, 0.7419, 0.7188, 0.8958, 0.5904,
+        0.7700], device='cuda:0')
+Average accuracy of MC = tensor(0.6930, device='cuda:0')
+4
+0.468401163816452
+77.77777777777779
+numtestbatch 169
+totalloss   188.08480340987444
+averageloss 1.1129278308276593
+Per test accuracy of MC = tensor([0.5700, 0.4848, 0.8800, 0.7500, 0.7200, 0.7419, 0.9375, 0.9271, 0.6024,
+        0.7700], device='cuda:0')
+Average accuracy of MC = tensor(0.7384, device='cuda:0')
+5
+0.4098339080810547
+88.88888888888889
+numtestbatch 169
+totalloss   176.26500514149666
+averageloss 1.0429881961035306
+Per test accuracy of MC = tensor([0.5700, 0.6061, 0.8400, 0.7300, 0.7300, 0.7527, 0.9375, 0.9583, 0.6145,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7549, device='cuda:0')
+6
+0.6147667169570923
+88.88888888888889
+numtestbatch 169
+totalloss   192.51255632657558
+averageloss 1.1391275522282578
+Per test accuracy of MC = tensor([0.5700, 0.6667, 0.8600, 0.7200, 0.7300, 0.7634, 0.9375, 0.9583, 0.6145,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7630, device='cuda:0')
+7
+0.005058023612946272
+100.0
+numtestbatch 169
+totalloss   259.44593277573586
+averageloss 1.5351830341759518
+Per test accuracy of MC = tensor([0.5700, 0.6667, 0.9300, 0.7200, 0.7300, 0.7634, 0.9375, 0.9583, 0.6024,
+        0.8200], device='cuda:0')
+Average accuracy of MC = tensor(0.7698, device='cuda:0')
+8
+0.4848392903804779
+77.77777777777779
+numtestbatch 169
+totalloss   222.54301935061812
+averageloss 1.3168225997077996
+Per test accuracy of MC = tensor([0.5700, 0.6667, 0.9300, 0.7200, 0.7400, 0.7419, 0.9375, 0.9583, 0.6024,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.7697, device='cuda:0')
+9
+0.06892344355583191
+100.0
+numtestbatch 169
+totalloss   235.82682130299509
+averageloss 1.3954249781242314
+Per test accuracy of MC = tensor([0.5700, 0.6970, 0.9300, 0.7300, 0.7500, 0.7312, 0.9375, 0.9583, 0.6024,
+        0.8400], device='cuda:0')
+Average accuracy of MC = tensor(0.7746, device='cuda:0')
+10
+0.26123034954071045
+88.88888888888889
+numtestbatch 169
+totalloss   236.40678199753165
+averageloss 1.3988566982102464
+Per test accuracy of MC = tensor([0.5600, 0.7273, 0.9000, 0.7500, 0.7500, 0.7419, 0.9375, 0.9792, 0.6024,
+        0.8400], device='cuda:0')
+Average accuracy of MC = tensor(0.7788, device='cuda:0')
+11
+0.06444287300109863
+100.0
+numtestbatch 169
+totalloss   256.8055410683155
+averageloss 1.5195594146054172
+Per test accuracy of MC = tensor([0.5700, 0.6970, 0.9100, 0.7500, 0.7500, 0.7312, 0.9375, 0.9792, 0.6024,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.7757, device='cuda:0')
+12
+0.0029665629845112562
+100.0
+numtestbatch 169
+totalloss   266.8654578663409
+averageloss 1.5790855495049756
+Per test accuracy of MC = tensor([0.5600, 0.6970, 0.9100, 0.7600, 0.7600, 0.7097, 0.9375, 0.9792, 0.6024,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7726, device='cuda:0')
+13
+0.01679457537829876
+100.0
+numtestbatch 169
+totalloss   271.34653940424323
+averageloss 1.605600824877179
+Per test accuracy of MC = tensor([0.5700, 0.7576, 0.9100, 0.7700, 0.7600, 0.6774, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7764, device='cuda:0')
+14
+0.054067663848400116
+100.0
+numtestbatch 169
+totalloss   282.19285548478365
+averageloss 1.6697802099691341
+Per test accuracy of MC = tensor([0.5600, 0.7576, 0.9100, 0.7700, 0.7600, 0.6774, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7754, device='cuda:0')
+15
+0.05850562825798988
+100.0
+numtestbatch 169
+totalloss   253.06481536105275
+averageloss 1.4974249429648092
+Per test accuracy of MC = tensor([0.5600, 0.7576, 0.9100, 0.7700, 0.7600, 0.6774, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7754, device='cuda:0')
+16
+0.040354833006858826
+100.0
+numtestbatch 169
+totalloss   227.6652698032558
+averageloss 1.347131773983762
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9100, 0.7900, 0.7600, 0.6667, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7753, device='cuda:0')
+17
+0.08162297308444977
+100.0
+numtestbatch 169
+totalloss   273.90168353449553
+averageloss 1.6207200209141748
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9200, 0.8000, 0.7600, 0.6774, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7784, device='cuda:0')
+18
+0.04266386479139328
+100.0
+numtestbatch 169
+totalloss   283.60745349526405
+averageloss 1.678150612398012
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9200, 0.8100, 0.7800, 0.6667, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7803, device='cuda:0')
+19
+0.06131723150610924
+100.0
+numtestbatch 169
+totalloss   302.8581677582115
+averageloss 1.7920601642497722
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9200, 0.8300, 0.7800, 0.6882, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7845, device='cuda:0')
+20
+0.033934012055397034
+100.0
+numtestbatch 169
+totalloss   288.1367471013218
+averageloss 1.7049511662800108
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9200, 0.8300, 0.7800, 0.6774, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7834, device='cuda:0')
+21
+0.3914014399051666
+88.88888888888889
+numtestbatch 169
+totalloss   262.54967986792326
+averageloss 1.5535484015853447
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9100, 0.8300, 0.7800, 0.6989, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7846, device='cuda:0')
+22
+0.09690173715353012
+100.0
+numtestbatch 169
+totalloss   319.7846897300333
+averageloss 1.8922170989942797
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9100, 0.8300, 0.7800, 0.6989, 0.9375, 0.9792, 0.6024,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7846, device='cuda:0')
+23
+0.0034914016723632812
+100.0
+numtestbatch 169
+totalloss   276.699187065009
+averageloss 1.637273296242657
+Per test accuracy of MC = tensor([0.5500, 0.7576, 0.9100, 0.8300, 0.7800, 0.7097, 0.9375, 0.9792, 0.6145,
+        0.8000], device='cuda:0')
+Average accuracy of MC = tensor(0.7868, device='cuda:0')
+24
+1.2449461221694946
+55.55555555555556
+numtestbatch 169
+totalloss   316.60830187797546
+averageloss 1.873421904603405
+Per test accuracy of MC = tensor([0.5500, 0.7879, 0.9200, 0.8300, 0.7800, 0.6989, 0.9688, 0.9792, 0.6145,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7939, device='cuda:0')
+25
+0.002330726943910122
+100.0
+numtestbatch 169
+totalloss   299.94444083143026
+averageloss 1.774819176517339
+Per test accuracy of MC = tensor([0.5500, 0.7879, 0.9200, 0.8300, 0.7800, 0.7204, 0.9688, 0.9792, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7973, device='cuda:0')
+26
+0.12241286784410477
+100.0
+numtestbatch 169
+totalloss   291.5107530169189
+averageloss 1.7249156983249638
+Per test accuracy of MC = tensor([0.5200, 0.7879, 0.9200, 0.8300, 0.7800, 0.7097, 0.9688, 0.9583, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7911, device='cuda:0')
+27
+0.03967968747019768
+100.0
+numtestbatch 169
+totalloss   254.64202739298344
+averageloss 1.5067575585383635
+Per test accuracy of MC = tensor([0.5300, 0.7879, 0.9200, 0.8400, 0.7800, 0.7312, 0.9688, 0.9688, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7963, device='cuda:0')
+28
+0.07868196070194244
+100.0
+numtestbatch 169
+totalloss   303.17673970386386
+averageloss 1.793945205348307
+Per test accuracy of MC = tensor([0.5300, 0.7879, 0.9100, 0.8300, 0.7800, 0.7312, 0.9688, 0.9688, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7943, device='cuda:0')
+29
+0.16330793499946594
+88.88888888888889
+numtestbatch 169
+totalloss   249.1663869684562
+averageloss 1.4743573193399775
+Per test accuracy of MC = tensor([0.5300, 0.7879, 0.9100, 0.8300, 0.7900, 0.7312, 0.9688, 0.9792, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7963, device='cuda:0')
+30
+0.005183008033782244
+100.0
+numtestbatch 169
+totalloss   260.18833465501666
+averageloss 1.5395759447042405
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8300, 0.7900, 0.7312, 0.9688, 0.9688, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7983, device='cuda:0')
+31
+0.02139720693230629
+100.0
+numtestbatch 169
+totalloss   283.81176839768887
+averageloss 1.6793595763176856
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8300, 0.7900, 0.7312, 0.9688, 0.9688, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7983, device='cuda:0')
+32
+0.004335762932896614
+100.0
+numtestbatch 169
+totalloss   331.4593741670251
+averageloss 1.9612980719942312
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8200, 0.7900, 0.7204, 0.9688, 0.9688, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7963, device='cuda:0')
+33
+0.0057139927521348
+100.0
+numtestbatch 169
+totalloss   281.8897051392123
+averageloss 1.6679864209420847
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8100, 0.8000, 0.7204, 0.9688, 0.9792, 0.6265,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.7973, device='cuda:0')
+34
+0.018027067184448242
+100.0
+numtestbatch 169
+totalloss   293.16977591626346
+averageloss 1.7347324018713814
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8300, 0.8000, 0.7204, 0.9688, 0.9792, 0.6386,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.8005, device='cuda:0')
+35
+0.004162656143307686
+100.0
+numtestbatch 169
+totalloss   298.76381943840533
+averageloss 1.7678332511148245
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9100, 0.8200, 0.8000, 0.7204, 0.9688, 0.9792, 0.6386,
+        0.8100], device='cuda:0')
+Average accuracy of MC = tensor(0.8005, device='cuda:0')
+36
+0.04024849832057953
+100.0
+numtestbatch 169
+totalloss   322.82900061365217
+averageloss 1.910230772861847
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9100, 0.8100, 0.8000, 0.7204, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8027, device='cuda:0')
+37
+0.005083667114377022
+100.0
+numtestbatch 169
+totalloss   311.9465347966179
+averageloss 1.8458374840036564
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.8900, 0.8100, 0.8000, 0.7312, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8018, device='cuda:0')
+38
+0.005575855728238821
+100.0
+numtestbatch 169
+totalloss   287.492075830698
+averageloss 1.7011365433769112
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.8900, 0.8200, 0.8000, 0.7312, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8028, device='cuda:0')
+39
+0.006100389640778303
+100.0
+numtestbatch 169
+totalloss   287.8511941358447
+averageloss 1.7032615037623948
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.8900, 0.8200, 0.8000, 0.7419, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8039, device='cuda:0')
+40
+0.0043559605255723
+100.0
+numtestbatch 169
+totalloss   285.36102606356144
+averageloss 1.688526781441192
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.8900, 0.8200, 0.8000, 0.7312, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8028, device='cuda:0')
+41
+0.19997237622737885
+77.77777777777779
+numtestbatch 169
+totalloss   304.44649701192975
+averageloss 1.8014585622007677
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.8900, 0.8200, 0.8000, 0.7419, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8039, device='cuda:0')
+42
+0.00035060776281170547
+100.0
+numtestbatch 169
+totalloss   310.3957265801728
+averageloss 1.836661104024691
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8200, 0.8000, 0.7312, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8038, device='cuda:0')
+43
+0.03159051388502121
+100.0
+numtestbatch 169
+totalloss   337.46797575987875
+averageloss 1.996851927573247
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8200, 0.8000, 0.7419, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8049, device='cuda:0')
+44
+0.0005252890987321734
+100.0
+numtestbatch 169
+totalloss   316.0606656493619
+averageloss 1.8701814535465202
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8200, 0.8000, 0.7419, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8049, device='cuda:0')
+45
+0.01089733187109232
+100.0
+numtestbatch 169
+totalloss   290.48447353579104
+averageloss 1.7188430386733198
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8200, 0.8000, 0.7527, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8059, device='cuda:0')
+46
+0.07568439841270447
+100.0
+numtestbatch 169
+totalloss   360.17862889915705
+averageloss 2.1312344905275564
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8100, 0.8000, 0.7527, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8049, device='cuda:0')
+47
+0.3061501085758209
+88.88888888888889
+numtestbatch 169
+totalloss   344.66426427382976
+averageloss 2.039433516413194
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8100, 0.8000, 0.7527, 0.9688, 0.9688, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8039, device='cuda:0')
+48
+0.012592296116054058
+100.0
+numtestbatch 169
+totalloss   290.043833732605
+averageloss 1.7162357025597927
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8100, 0.8000, 0.7527, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8049, device='cuda:0')
+49
+0.005771977826952934
+100.0
+numtestbatch 169
+totalloss   281.2438015062362
+averageloss 1.6641645059540604
+Per test accuracy of MC = tensor([0.5400, 0.8182, 0.9000, 0.8100, 0.8000, 0.7527, 0.9688, 0.9688, 0.6506,
+        0.8300], device='cuda:0')
+Average accuracy of MC = tensor(0.8039, device='cuda:0')
+Accuracy per class for TSCNN: tensor([0.5500, 0.9394, 0.8700, 0.7700, 0.8000, 0.5806, 0.9688, 0.9792, 0.6506,
+        0.8300], device='cuda:0')
+
+Average accuracy for TSCNN: 0.7938558459281921
+Training and validating  MLMC
+Learning rate:           0.001
+numEpochs:               50
+weightDecay:             1e-05
+0
+1.5874886512756348
+33.33333333333333
+numtestbatch 169
+totalloss   264.9311279654503
+averageloss 1.5676398104464515
+Per test accuracy of MLMC = tensor([0.1400, 0.0303, 0.5100, 0.6900, 0.1200, 0.6559, 0.0000, 0.7396, 0.4699,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.4226, device='cuda:0')
+1
+1.326477289199829
+66.66666666666666
+numtestbatch 169
+totalloss   214.2677054591477
+averageloss 1.2678562453204005
+Per test accuracy of MLMC = tensor([0.6600, 0.2424, 0.6400, 0.7600, 0.3600, 0.6022, 0.3125, 0.7396, 0.5181,
+        0.7800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.5615, device='cuda:0')
+2
+0.25061795115470886
+100.0
+numtestbatch 169
+totalloss   184.18889333680272
+averageloss 1.0898751085017913
+Per test accuracy of MLMC = tensor([0.7200, 0.4545, 0.6200, 0.7600, 0.5200, 0.6344, 0.6250, 0.7708, 0.5663,
+        0.8100], device='cuda:0')
+Average accuracy of MLMC = tensor(0.6481, device='cuda:0')
+3
+1.4666494131088257
+55.55555555555556
+numtestbatch 169
+totalloss   187.62349211797118
+averageloss 1.1101981782128472
+Per test accuracy of MLMC = tensor([0.8100, 0.6970, 0.6100, 0.7300, 0.6300, 0.7312, 0.7500, 0.7708, 0.6024,
+        0.7500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7081, device='cuda:0')
+4
+0.3729665279388428
+100.0
+numtestbatch 169
+totalloss   181.0378213301301
+averageloss 1.0712297120126042
+Per test accuracy of MLMC = tensor([0.8500, 0.8182, 0.7600, 0.6800, 0.6700, 0.6989, 0.8438, 0.8958, 0.5904,
+        0.7700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7577, device='cuda:0')
+5
+0.7543941736221313
+77.77777777777779
+numtestbatch 169
+totalloss   179.62796322256327
+averageloss 1.0628873563465282
+Per test accuracy of MLMC = tensor([0.8000, 0.8182, 0.7800, 0.7200, 0.7400, 0.7419, 0.9375, 0.9167, 0.5904,
+        0.7900], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7835, device='cuda:0')
+6
+0.478570818901062
+66.66666666666666
+numtestbatch 169
+totalloss   168.30428312160075
+averageloss 0.9958833320804777
+Per test accuracy of MLMC = tensor([0.7800, 0.8182, 0.7800, 0.7500, 0.7900, 0.7204, 0.9375, 0.9271, 0.6024,
+        0.8300], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7936, device='cuda:0')
+7
+0.1887320727109909
+100.0
+numtestbatch 169
+totalloss   177.1108902376145
+averageloss 1.0479934333586658
+Per test accuracy of MLMC = tensor([0.7500, 0.8182, 0.8300, 0.7500, 0.8100, 0.6774, 0.9375, 0.9375, 0.6024,
+        0.8300], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7943, device='cuda:0')
+8
+0.31949156522750854
+77.77777777777779
+numtestbatch 169
+totalloss   209.57487083226442
+averageloss 1.2400879930903221
+Per test accuracy of MLMC = tensor([0.7100, 0.7273, 0.9100, 0.7600, 0.8100, 0.6452, 0.9375, 0.9375, 0.6024,
+        0.8300], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7870, device='cuda:0')
+9
+0.6664277911186218
+77.77777777777779
+numtestbatch 169
+totalloss   190.4755816301331
+averageloss 1.1270744475155805
+Per test accuracy of MLMC = tensor([0.7000, 0.8182, 0.9500, 0.7600, 0.8100, 0.6667, 0.9375, 0.9375, 0.6024,
+        0.8100], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7992, device='cuda:0')
+10
+0.22120121121406555
+88.88888888888889
+numtestbatch 169
+totalloss   193.4726943904534
+averageloss 1.1448088425470615
+Per test accuracy of MLMC = tensor([0.6400, 0.7576, 0.9500, 0.7500, 0.8300, 0.6344, 0.9375, 0.9375, 0.6024,
+        0.8200], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7859, device='cuda:0')
+11
+0.003450075862929225
+100.0
+numtestbatch 169
+totalloss   195.90590981394053
+averageloss 1.1592065669463936
+Per test accuracy of MLMC = tensor([0.6400, 0.7576, 0.9400, 0.7500, 0.8300, 0.6022, 0.9375, 0.9479, 0.6145,
+        0.8400], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7860, device='cuda:0')
+12
+0.0098419189453125
+100.0
+numtestbatch 169
+totalloss   208.83916938083712
+averageloss 1.235734730064125
+Per test accuracy of MLMC = tensor([0.5900, 0.7879, 0.9400, 0.7500, 0.8200, 0.5806, 0.9375, 0.9479, 0.6145,
+        0.8400], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7808, device='cuda:0')
+13
+0.05894286185503006
+100.0
+numtestbatch 169
+totalloss   204.58886816352606
+averageloss 1.2105850187190892
+Per test accuracy of MLMC = tensor([0.5700, 0.7879, 0.9400, 0.7600, 0.8200, 0.5699, 0.9375, 0.9479, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7798, device='cuda:0')
+14
+0.057390160858631134
+100.0
+numtestbatch 169
+totalloss   228.97996149631217
+averageloss 1.354911014771078
+Per test accuracy of MLMC = tensor([0.5700, 0.7879, 0.9200, 0.7900, 0.8100, 0.5484, 0.9375, 0.9479, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7776, device='cuda:0')
+15
+0.3591194748878479
+77.77777777777779
+numtestbatch 169
+totalloss   198.3099668608047
+averageloss 1.173431756572809
+Per test accuracy of MLMC = tensor([0.5600, 0.8485, 0.9300, 0.7800, 0.8100, 0.5484, 0.9375, 0.9688, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7848, device='cuda:0')
+16
+0.006757842376828194
+100.0
+numtestbatch 169
+totalloss   266.69748726207763
+averageloss 1.5780916406040097
+Per test accuracy of MLMC = tensor([0.5600, 0.8788, 0.9400, 0.7800, 0.8100, 0.5161, 0.9375, 0.9688, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7856, device='cuda:0')
+17
+0.005109495483338833
+100.0
+numtestbatch 169
+totalloss   209.17760635050945
+averageloss 1.2377373156834879
+Per test accuracy of MLMC = tensor([0.5600, 0.8788, 0.9400, 0.8000, 0.8100, 0.5376, 0.9375, 0.9583, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7897, device='cuda:0')
+18
+0.6736327409744263
+77.77777777777779
+numtestbatch 169
+totalloss   230.8762130299583
+averageloss 1.3661314380470906
+Per test accuracy of MLMC = tensor([0.5400, 0.9091, 0.9400, 0.7900, 0.8000, 0.5269, 0.9375, 0.9583, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7866, device='cuda:0')
+19
+0.0013105074176564813
+100.0
+numtestbatch 169
+totalloss   255.00928336833022
+averageloss 1.508930670818522
+Per test accuracy of MLMC = tensor([0.5300, 0.9091, 0.9600, 0.7700, 0.8000, 0.5269, 0.9375, 0.9583, 0.6145,
+        0.8500], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7856, device='cuda:0')
+20
+0.05648748204112053
+100.0
+numtestbatch 169
+totalloss   213.0802766541019
+averageloss 1.260830039373384
+Per test accuracy of MLMC = tensor([0.5100, 0.9091, 0.9700, 0.7900, 0.8000, 0.5269, 0.9375, 0.9583, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7876, device='cuda:0')
+21
+0.3808787167072296
+77.77777777777779
+numtestbatch 169
+totalloss   202.29741529049352
+averageloss 1.1970261259792516
+Per test accuracy of MLMC = tensor([0.5100, 0.9091, 0.9700, 0.8100, 0.7900, 0.5161, 0.9375, 0.9583, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7876, device='cuda:0')
+22
+0.15726998448371887
+88.88888888888889
+numtestbatch 169
+totalloss   253.0591236371547
+averageloss 1.4973912641251756
+Per test accuracy of MLMC = tensor([0.5200, 0.9091, 0.9700, 0.8100, 0.7900, 0.5269, 0.9688, 0.9583, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7928, device='cuda:0')
+23
+0.014382507652044296
+100.0
+numtestbatch 169
+totalloss   251.40387395769358
+averageloss 1.4875968873236307
+Per test accuracy of MLMC = tensor([0.5200, 0.9091, 0.9700, 0.8100, 0.7900, 0.5376, 0.9375, 0.9688, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7917, device='cuda:0')
+24
+0.002487235702574253
+100.0
+numtestbatch 169
+totalloss   227.01402303599752
+averageloss 1.3432782428165535
+Per test accuracy of MLMC = tensor([0.5200, 0.9091, 0.9700, 0.8100, 0.7900, 0.5484, 0.9375, 0.9688, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7928, device='cuda:0')
+25
+0.07308215647935867
+100.0
+numtestbatch 169
+totalloss   244.96913201163989
+averageloss 1.4495214911931353
+Per test accuracy of MLMC = tensor([0.5100, 0.9091, 0.9700, 0.8100, 0.7900, 0.5591, 0.9375, 0.9688, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7929, device='cuda:0')
+26
+0.27602171897888184
+88.88888888888889
+numtestbatch 169
+totalloss   255.49335055612028
+averageloss 1.5117949737048537
+Per test accuracy of MLMC = tensor([0.5100, 0.9091, 0.9600, 0.8100, 0.7900, 0.5376, 0.9375, 0.9688, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7897, device='cuda:0')
+27
+0.023214181885123253
+100.0
+numtestbatch 169
+totalloss   258.23884966774494
+averageloss 1.5280405305783724
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8100, 0.7900, 0.5591, 0.9688, 0.9688, 0.6145,
+        0.8600], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7930, device='cuda:0')
+28
+0.03099760040640831
+100.0
+numtestbatch 169
+totalloss   249.56906244100537
+averageloss 1.4767400144438187
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8100, 0.7900, 0.5591, 0.9688, 0.9583, 0.6145,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7930, device='cuda:0')
+29
+0.03581931069493294
+100.0
+numtestbatch 169
+totalloss   259.76466547348537
+averageloss 1.5370690264703275
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8100, 0.7900, 0.5376, 0.9688, 0.9688, 0.6386,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7943, device='cuda:0')
+30
+0.2428712248802185
+88.88888888888889
+numtestbatch 169
+totalloss   252.77561941291788
+averageloss 1.4957137243367922
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8100, 0.7900, 0.5376, 0.9688, 0.9583, 0.6265,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7920, device='cuda:0')
+31
+0.16412729024887085
+88.88888888888889
+numtestbatch 169
+totalloss   294.5142607698217
+averageloss 1.742687933549241
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8100, 0.7900, 0.5161, 0.9688, 0.9583, 0.6265,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7899, device='cuda:0')
+32
+0.00015836292004678398
+100.0
+numtestbatch 169
+totalloss   316.89458977105096
+averageloss 1.8751159158050352
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8000, 0.7900, 0.5161, 0.9688, 0.9583, 0.6386,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7901, device='cuda:0')
+33
+0.14746075868606567
+88.88888888888889
+numtestbatch 169
+totalloss   257.50708011351526
+averageloss 1.5237105332160665
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8000, 0.7900, 0.5161, 0.9375, 0.9688, 0.6386,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7880, device='cuda:0')
+34
+0.00966318417340517
+100.0
+numtestbatch 169
+totalloss   264.47468284890056
+averageloss 1.5649389517686423
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9700, 0.8000, 0.7900, 0.5161, 0.9375, 0.9688, 0.6386,
+        0.8700], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7890, device='cuda:0')
+35
+0.009239329025149345
+100.0
+numtestbatch 169
+totalloss   267.80505473259836
+averageloss 1.5846452942757299
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8000, 0.7900, 0.5161, 0.9375, 0.9583, 0.6145,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7856, device='cuda:0')
+36
+0.05692647024989128
+100.0
+numtestbatch 169
+totalloss   311.1989384479821
+averageloss 1.8414138369703081
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9600, 0.8000, 0.7900, 0.5161, 0.9688, 0.9688, 0.6265,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7909, device='cuda:0')
+37
+0.2423648238182068
+88.88888888888889
+numtestbatch 169
+totalloss   273.36967470496893
+averageloss 1.6175720396743725
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9700, 0.8000, 0.7900, 0.5161, 0.9688, 0.9688, 0.6265,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7919, device='cuda:0')
+38
+0.00034703148412518203
+100.0
+numtestbatch 169
+totalloss   266.3554938212037
+averageloss 1.5760680107763534
+Per test accuracy of MLMC = tensor([0.4900, 0.9091, 0.9700, 0.8000, 0.7900, 0.5161, 0.9688, 0.9688, 0.5904,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7883, device='cuda:0')
+39
+0.011403613723814487
+100.0
+numtestbatch 169
+totalloss   242.5628393944353
+averageloss 1.4352830733398538
+Per test accuracy of MLMC = tensor([0.4800, 0.9091, 0.9700, 0.8000, 0.7900, 0.5161, 0.9688, 0.9688, 0.6024,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7885, device='cuda:0')
+40
+0.0036961238365620375
+100.0
+numtestbatch 169
+totalloss   317.0284252841957
+averageloss 1.8759078419183177
+Per test accuracy of MLMC = tensor([0.4800, 0.9091, 0.9700, 0.8000, 0.7900, 0.5054, 0.9688, 0.9688, 0.6024,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7874, device='cuda:0')
+41
+0.46856939792633057
+88.88888888888889
+numtestbatch 169
+totalloss   248.36202600435354
+averageloss 1.469597787008009
+Per test accuracy of MLMC = tensor([0.4800, 0.8788, 0.9700, 0.8000, 0.7900, 0.5054, 0.9688, 0.9688, 0.6024,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7844, device='cuda:0')
+42
+0.2749463617801666
+88.88888888888889
+numtestbatch 169
+totalloss   312.34690967109054
+averageloss 1.8482065661011275
+Per test accuracy of MLMC = tensor([0.4800, 0.8788, 0.9700, 0.8000, 0.7900, 0.5054, 0.9688, 0.9688, 0.6024,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7844, device='cuda:0')
+43
+0.0009179644985124469
+100.0
+numtestbatch 169
+totalloss   299.9005355114932
+averageloss 1.774559381724812
+Per test accuracy of MLMC = tensor([0.4800, 0.8788, 0.9600, 0.8000, 0.7900, 0.5054, 0.9375, 0.9688, 0.6024,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7803, device='cuda:0')
+44
+0.0005982981529086828
+100.0
+numtestbatch 169
+totalloss   252.5563860340044
+averageloss 1.49441648540831
+Per test accuracy of MLMC = tensor([0.4800, 0.9091, 0.9600, 0.8000, 0.7900, 0.5054, 0.9375, 0.9688, 0.6145,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7845, device='cuda:0')
+45
+0.09130224585533142
+100.0
+numtestbatch 169
+totalloss   281.4259922685742
+averageloss 1.665242557802214
+Per test accuracy of MLMC = tensor([0.4800, 0.8788, 0.9600, 0.8000, 0.7900, 0.5054, 0.9375, 0.9688, 0.6265,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7827, device='cuda:0')
+46
+0.005822420120239258
+100.0
+numtestbatch 169
+totalloss   263.5924100764096
+averageloss 1.5597184028189917
+Per test accuracy of MLMC = tensor([0.4900, 0.8788, 0.9600, 0.8000, 0.7900, 0.5054, 0.9375, 0.9688, 0.6145,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7825, device='cuda:0')
+47
+0.0020352469291538
+100.0
+numtestbatch 169
+totalloss   263.35216526314616
+averageloss 1.5582968358766045
+Per test accuracy of MLMC = tensor([0.4900, 0.8788, 0.9600, 0.8000, 0.7900, 0.5054, 0.9688, 0.9688, 0.6265,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7868, device='cuda:0')
+48
+0.00615827227011323
+100.0
+numtestbatch 169
+totalloss   266.6840461973334
+averageloss 1.5780121076765288
+Per test accuracy of MLMC = tensor([0.5100, 0.8788, 0.9600, 0.8000, 0.7900, 0.5054, 0.9688, 0.9688, 0.6265,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7888, device='cuda:0')
+49
+0.0029214222449809313
+100.0
+numtestbatch 169
+totalloss   275.5844860181678
+averageloss 1.6306774320601645
+Per test accuracy of MLMC = tensor([0.5200, 0.8788, 0.9600, 0.7900, 0.7900, 0.5054, 0.9688, 0.9688, 0.6145,
+        0.8800], device='cuda:0')
+Average accuracy of MLMC = tensor(0.7876, device='cuda:0')
+Traceback (most recent call last):
+  File "train.py", line 635, in <module>
+    torch.save(LMC_model.state_dict() , "models/lmc.pt")
+  File "/mnt/storage/software/languages/anaconda/Anaconda3-2019.07/lib/python3.7/site-packages/torch/serialization.py", line 224, in save
+    return _with_file_like(f, "wb", lambda f: _save(obj, f, pickle_module, pickle_protocol))
+  File "/mnt/storage/software/languages/anaconda/Anaconda3-2019.07/lib/python3.7/site-packages/torch/serialization.py", line 147, in _with_file_like
+    f = open(f, mode)
+FileNotFoundError: [Errno 2] No such file or directory: 'models/lmc.pt'

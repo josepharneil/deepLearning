@@ -3,7 +3,7 @@ import torch.backends.cudnn
 import numpy as np
 from torch import nn, optim
 from torch.nn import functional as F
-from torch.optim.optimizer import Optimizer 
+from torch.optim.optimizer import Optimizer
 from torch.utils.data import DataLoader
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
@@ -123,7 +123,8 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            padding = 1 
+            dilation=16,
+            padding = 1
         )
 
         self.norm2 = nn.BatchNorm2d(num_features = 32)
@@ -158,7 +159,14 @@ class LMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        self.fc1 = nn.Linear(in_features=15488,out_features=1024)
+        # self.fc1 = nn.Linear(in_features=15488,out_features=1024)
+        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation 4
+        # self.fc1 = nn.Linear(in_features=53760,out_features=1024)#dilation 2
+        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)#dilation 6
+        # self.fc1 = nn.Linear(in_features=32256,out_features=1024)#dilation 8
+        # self.fc1 = nn.Linear(in_features=20480,out_features=1024)#dilation 12
+        self.fc1 = nn.Linear(in_features=38912,out_features=1024)#dilation16
+        
         #13440
         
         #6th layer
@@ -176,8 +184,11 @@ class LMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
+        
         # x = self.dropout3(x)
-        x = self.pool1(x)   ###here is the uncertainty
+        # x = self.pool1(x)   ###here is the uncertainty
+        # print(x.shape)
+
         x = self.dropout1(x)
 
         ##3
@@ -196,6 +207,7 @@ class LMC_Net(nn.Module):
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
+        # print(x.shape)
 
         ##5
         x = self.fc1(x)
@@ -233,6 +245,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
+            dilation=16,
             padding = 1 
         )
 
@@ -268,7 +281,13 @@ class MLMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        self.fc1 = nn.Linear(in_features=26048,out_features=1024)
+        # self.fc1 = nn.Linear(in_features=26048,out_features=1024)
+        # self.fc1 = nn.Linear(in_features=92160,out_features=1024)#dilation2
+        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation4
+        # self.fc1 = nn.Linear(in_features=69632,out_features=1024)#dilation6
+        # self.fc1 = nn.Linear(in_features=59136,out_features=1024)#dilation8
+        # self.fc1 = nn.Linear(in_features=39680,out_features=1024)#dilation12
+        self.fc1 = nn.Linear(in_features=22272,out_features=1024)#dilation16
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -286,7 +305,7 @@ class MLMC_Net(nn.Module):
         x = self.norm2(x)
         x = F.relu(x)
         # x = self.dropout3(x)
-        x = self.pool1(x)   ###here is the uncertainty
+        ### x = self.pool1(x)   ###here is the uncertainty
         x = self.dropout1(x)
 
         ##3
@@ -305,9 +324,9 @@ class MLMC_Net(nn.Module):
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
+        # print(x.shape)
 
         ##5
-        # print(x.shape)
         x = self.fc1(x)
         x = torch.sigmoid(x)
         x = self.dropout3(x)
@@ -622,7 +641,9 @@ trainAndValidate(MLMC_model, train_loader_MLMC, test_loader_MLMC, MLMC_logitFile
 # print()
 
 
-
+torch.save(LMC_model.state_dict() , "models/lmc.pt")
+torch.save(MC_model.state_dict()  , "models/mc.pt")
+torch.save(MLMC_model.state_dict(), "models/mlmc.pt")
 
 
 #endregion Models
