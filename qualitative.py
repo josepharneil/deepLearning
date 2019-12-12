@@ -11,30 +11,21 @@ import matplotlib.pyplot as plt
 
 from dataset import UrbanSound8KDataset
 
-summary_writer = SummaryWriter('logs',flush_secs=5)
 
 print("cuda is available: ", torch.cuda.is_available())
 device = torch.device('cuda' if torch.cuda.is_available() else "cpu")
 
+#Load the data
 #region data
 train_loader_LMC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_train.pkl', 'LMC'),
     batch_size=32, shuffle=True,
     num_workers=8, pin_memory=True)
 
-#train_loader_LMC.input.to(device)
-
 test_loader_LMC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_test.pkl', 'LMC'),
     batch_size=32, shuffle=False,
     num_workers=8, pin_memory=True)
-
-# print(len(test_loader_LMC))
-# for i,(input,target,filenames) in enumerate(test_loader_LMC):
-#     print(i)
-
-# for i, (input,target,filenames) in enumerate(trainloader):
-    # print(type(images))
 
 train_loader_MC = torch.utils.data.DataLoader(
     UrbanSound8KDataset('UrbanSound8K_train.pkl', 'MC'),
@@ -56,16 +47,9 @@ test_loader_MLMC = torch.utils.data.DataLoader(
      batch_size=32, shuffle=False,
      num_workers=8, pin_memory=True)
 
-# result = 0
-# for i,(input,target,filenames) in enumerate(test_loader_MLMC):
-#     result += (input.shape)[0]
-# print(result)
-
-# for i,(input,target,filenames) in enumerate(train_loader_LMC):
-    # print(i)
-
 #endregion data
 
+#Create Network Classes
 #region NetworkClasses
 
 class LMC_Net(nn.Module):
@@ -75,17 +59,14 @@ class LMC_Net(nn.Module):
 
         ##1st layer
         self.conv1 = nn.Conv2d(
-            #presuming 1 channel input image?????
             in_channels=1,
             out_channels=32,
             kernel_size=(3,3),
-            # stride=(2,2),
             padding = 1 
         )
 
         self.norm1 = nn.BatchNorm2d(num_features=32)
         
-
         ##2nd layer
         self.dropout1 = nn.Dropout(p=0.5)
 
@@ -98,7 +79,6 @@ class LMC_Net(nn.Module):
 
         self.norm2 = nn.BatchNorm2d(num_features = 32)
 
-        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
         self.pool1 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
@@ -106,7 +86,6 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
-            #stride = (2,2)
             padding = 1
         )
 
@@ -122,8 +101,6 @@ class LMC_Net(nn.Module):
             stride = (2,2),  
             padding = 1
         )
-        #pool instead of stride
-        # self.pool11 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
@@ -142,12 +119,10 @@ class LMC_Net(nn.Module):
         x = F.relu(x)
 
         ##2
-        # x = self.dropout3(x)
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-        # x = self.dropout3(x)
-        x = self.pool1(x)   ###here is the uncertainty
+        x = self.pool1(x) 
         x = self.dropout1(x)
 
         ##3
@@ -157,11 +132,9 @@ class LMC_Net(nn.Module):
         x = F.relu(x)
 
         ##4
-        # x = self.dropout9(x)
         x = self.conv4(x)
         x = self.norm4(x)
         x = F.relu(x)
-        # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
         x = self.dropout2(x)
 
         #Flatten
@@ -185,11 +158,9 @@ class MLMC_Net(nn.Module):
 
        ##1st layer
         self.conv1 = nn.Conv2d(
-            #presuming 1 channel input image?????
             in_channels=1,
             out_channels=32,
             kernel_size=(3,3),
-            # stride=(2,2),
             padding = 1 
         )
 
@@ -208,7 +179,6 @@ class MLMC_Net(nn.Module):
 
         self.norm2 = nn.BatchNorm2d(num_features = 32)
 
-        # self.pool6 = nn.MaxPool2d(kernel_size=(2,2))
         self.pool1 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
 
         ##3rd layer
@@ -216,7 +186,6 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
-            #stride = (2,2)
             padding = 1
         )
 
@@ -232,8 +201,6 @@ class MLMC_Net(nn.Module):
             stride = (2,2),  
             padding = 1
         )
-        #pool instead of stride
-        # self.pool11 = nn.MaxPool2d(kernel_size=(2,2),padding=1)
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
@@ -251,12 +218,10 @@ class MLMC_Net(nn.Module):
         x = F.relu(x)
 
         ##2
-        # x = self.dropout3(x)
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-        # x = self.dropout3(x)
-        x = self.pool1(x)   ###here is the uncertainty
+        x = self.pool1(x)   
         x = self.dropout1(x)
 
         ##3
@@ -266,11 +231,9 @@ class MLMC_Net(nn.Module):
         x = F.relu(x)
 
         ##4
-        # x = self.dropout9(x)
         x = self.conv4(x)
         x = self.norm4(x)
         x = F.relu(x)
-        # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
         x = self.dropout2(x)
 
         #Flatten
@@ -289,19 +252,17 @@ class MLMC_Net(nn.Module):
 
 #endregion NetworkClasses
 
-# input2d = np.squeeze(input[i], axis=0)
-# plt.imshow(input2d.numpy())
-# plt.savefig('output.png')
 
+#Save image function
 def saveImage(inputJ, outputName):
     inputJ = inputJ.cpu()
     inputJ = inputJ.numpy()
     input2d = np.squeeze(inputJ, axis=0)
     input2d = np.squeeze(input2d, axis=0)
-    # plt.imshow(input2d.numpy())
     plt.imshow(input2d)
     plt.savefig(outputName)
 
+#Create, load and setup the saved models
 LMC_model = LMC_Net().to(device)
 MC_model = LMC_Net().to(device)
 
@@ -311,6 +272,8 @@ MC_model.load_state_dict(torch.load('models/mc.pt'))
 LMC_model.eval()
 MC_model.eval()
 
+
+# Find images
 foundOutput1 = False
 foundOutput21 = False
 foundOutput22 = False
@@ -320,30 +283,30 @@ foundOutput4 = False
 softmax = nn.Softmax(dim=0)
 #for each batch
 for i,(input,target,filenames) in enumerate(test_loader_LMC):
-    # print(input.shape)
-  #for each image
+    #for each image
     for j in range(0,input.shape[0]):
+        #Get image and target
         im = input[j].to(device)
         im.unsqueeze_(0)
-        # print(im.shape)
-        # im = input[i].to(device)
         targ = target[j].to(device)
         targ.unsqueeze_(0)
-        # targ = target[i].to(device)
+
+        #Get logits
         LMC_logits = LMC_model(im)
-        MC_logits = MC_model(im)
+        MC_logits  = MC_model(im)
+
+        #Get predictions
         LMC_prediction = torch.argmax(LMC_logits,dim=-1).to(device)
         MC_prediction = torch.argmax(MC_logits,dim = -1).to(device)
         TSCNN_prediction = torch.argmax((softmax(MC_logits)+softmax(LMC_logits)),dim=-1)
-        # print(targ)
-        # print(LMC_prediction)
-        # LMC_isCorrect   = (LMC_prediction   == targ)
-        # MC_isCorrect    = (MC_prediction    == targ)
-        # TSCNN_isCorrect = (TSCNN_prediction == targ)
+
+        #Check if correct
         LMC_isCorrect = (torch.equal(LMC_prediction, targ))
         MC_isCorrect = (torch.equal(MC_prediction, targ))
         TSCNN_isCorrect = (torch.equal(TSCNN_prediction, targ))
-        # print(LMC_isCorrect)
+
+        #Output image when appropriate
+
         ###output 1 LMC and MC correct
         if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
             saveImage(im,'outs/out1.png')
