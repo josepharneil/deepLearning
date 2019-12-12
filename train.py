@@ -93,7 +93,7 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            # dilation=2,
+            dilation=2,
             padding = 1
         )
 
@@ -127,19 +127,8 @@ class LMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        # dilation:
-        # self.fc1 = nn.Linear(in_features=15488,out_features=1024)
-        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)# 4
-        # self.fc1 = nn.Linear(in_features=53760,out_features=1024)# 2
-        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)# 6
-        # self.fc1 = nn.Linear(in_features=32256,out_features=1024)# 8
-        # self.fc1 = nn.Linear(in_features=20480,out_features=1024)# 12
-        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)#
-
-        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)#2,2,2
-        self.fc1 = nn.Linear(in_features=49856,out_features=1024)#2,2
-        
-        #13440
+        # self.fc1 = nn.Linear(in_features=15488,out_features=1024)#no dilation
+        self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -171,7 +160,6 @@ class LMC_Net(nn.Module):
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
-        # print(x.shape)
 
         ##5
         x = self.fc1(x)
@@ -207,7 +195,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            # dilation=2,
+            dilation=2,
             padding = 1 
         )
 
@@ -220,7 +208,6 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
-            #stride = (2,2)
             dilation=2,
             padding = 1
         )
@@ -242,17 +229,8 @@ class MLMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        #dilation
-        # self.fc1 = nn.Linear(in_features=26048,out_features=1024)
-        # self.fc1 = nn.Linear(in_features=92160,out_features=1024)#2
-        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#4
-        # self.fc1 = nn.Linear(in_features=69632,out_features=1024)#6
-        # self.fc1 = nn.Linear(in_features=59136,out_features=1024)#8
-        # self.fc1 = nn.Linear(in_features=39680,out_features=1024)#12
-        # self.fc1 = nn.Linear(in_features=22272,out_features=1024)#16
-
-        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#2,2,2
-        self.fc1 = nn.Linear(in_features=86336,out_features=1024)#2,2
+        # self.fc1 = nn.Linear(in_features=26048,out_features=1024)#no dilation
+        self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -265,12 +243,9 @@ class MLMC_Net(nn.Module):
         x = F.relu(x)
 
         ##2
-        # x = self.dropout3(x)
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-        # x = self.dropout3(x)
-        ### x = self.pool1(x)   ###here is the uncertainty
         x = self.dropout1(x)
 
         ##3
@@ -280,16 +255,13 @@ class MLMC_Net(nn.Module):
         x = F.relu(x)
 
         ##4
-        # x = self.dropout9(x)
         x = self.conv4(x)
         x = self.norm4(x)
         x = F.relu(x)
-        # x = self.pool11(x) #can be used instead of the 2 stride in the 4th layer conv
         x = self.dropout2(x)
 
         #Flatten
         x = torch.flatten(x,start_dim = 1)
-        # print(x.shape)
 
         ##5
         x = self.fc1(x)
