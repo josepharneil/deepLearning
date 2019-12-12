@@ -123,7 +123,7 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            dilation=16,
+            # dilation=2,
             padding = 1
         )
 
@@ -138,6 +138,7 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
+            dilation=2,
             padding = 1
         )
 
@@ -151,6 +152,7 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             stride = (2,2),  
+            dilation=2,
             padding = 1
         )
         #pool instead of stride
@@ -159,13 +161,17 @@ class LMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
+        # dilation:
         # self.fc1 = nn.Linear(in_features=15488,out_features=1024)
-        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation 4
-        # self.fc1 = nn.Linear(in_features=53760,out_features=1024)#dilation 2
-        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)#dilation 6
-        # self.fc1 = nn.Linear(in_features=32256,out_features=1024)#dilation 8
-        # self.fc1 = nn.Linear(in_features=20480,out_features=1024)#dilation 12
-        self.fc1 = nn.Linear(in_features=38912,out_features=1024)#dilation16
+        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)# 4
+        # self.fc1 = nn.Linear(in_features=53760,out_features=1024)# 2
+        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)# 6
+        # self.fc1 = nn.Linear(in_features=32256,out_features=1024)# 8
+        # self.fc1 = nn.Linear(in_features=20480,out_features=1024)# 12
+        # self.fc1 = nn.Linear(in_features=38912,out_features=1024)#
+
+        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)#2,2,2
+        self.fc1 = nn.Linear(in_features=49856,out_features=1024)#2,2
         
         #13440
         
@@ -245,7 +251,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            dilation=16,
+            # dilation=2,
             padding = 1 
         )
 
@@ -260,6 +266,7 @@ class MLMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             #stride = (2,2)
+            dilation=2,
             padding = 1
         )
 
@@ -272,7 +279,8 @@ class MLMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            stride = (2,2),  
+            stride = (2,2),
+            dilation=2,
             padding = 1
         )
         #pool instead of stride
@@ -281,13 +289,17 @@ class MLMC_Net(nn.Module):
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
+        #dilation
         # self.fc1 = nn.Linear(in_features=26048,out_features=1024)
-        # self.fc1 = nn.Linear(in_features=92160,out_features=1024)#dilation2
-        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation4
-        # self.fc1 = nn.Linear(in_features=69632,out_features=1024)#dilation6
-        # self.fc1 = nn.Linear(in_features=59136,out_features=1024)#dilation8
-        # self.fc1 = nn.Linear(in_features=39680,out_features=1024)#dilation12
-        self.fc1 = nn.Linear(in_features=22272,out_features=1024)#dilation16
+        # self.fc1 = nn.Linear(in_features=92160,out_features=1024)#2
+        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#4
+        # self.fc1 = nn.Linear(in_features=69632,out_features=1024)#6
+        # self.fc1 = nn.Linear(in_features=59136,out_features=1024)#8
+        # self.fc1 = nn.Linear(in_features=39680,out_features=1024)#12
+        # self.fc1 = nn.Linear(in_features=22272,out_features=1024)#16
+
+        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#2,2,2
+        self.fc1 = nn.Linear(in_features=86336,out_features=1024)#2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
