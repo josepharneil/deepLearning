@@ -318,28 +318,28 @@ for i,(input,target,filenames) in enumerate(test_loader_LMC):
 
                 ###output 1 LMC and MC correct
                 if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
-                    saveImage(im_LMC,'outs/out1-LMC.png')
-                    saveImage(im_MC,'outs/out1-MC.png')
+                    saveImage(im_LMC,'outsBase/out1-LMC.png')
+                    saveImage(im_MC,'outsBase/out1-MC.png')
                     foundOutput1 = True
                 ###output 2.1 LMC correct and MC incorrect
                 if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
-                    saveImage(im_LMC,'outs/out21-LMC.png')
-                    saveImage(im_MC,'outs/out21-MC.png')
+                    saveImage(im_LMC,'outsBase/out21-LMC.png')
+                    saveImage(im_MC,'outsBase/out21-MC.png')
                     foundOutput21 = True
                 ###output 2.2 LMC incorrect and MC correct
                 if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
-                    saveImage(im_LMC,'outs/out22-LMC.png')
-                    saveImage(im_MC,'outs/out22-MC.png')
+                    saveImage(im_LMC,'outsBase/out22-LMC.png')
+                    saveImage(im_MC,'outsBase/out22-MC.png')
                     foundOutput22 = True
                 ###output 3 TSCNN correct, LMC incorrect, MC incorrect
                 if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
-                    saveImage(im_LMC,'outs/out3-LMC.png')
-                    saveImage(im_MC,'outs/out3-MC.png')
+                    saveImage(im_LMC,'outsBase/out3-LMC.png')
+                    saveImage(im_MC,'outsBase/out3-MC.png')
                     foundOutput3 = True
                 ###output 4 all incorrect
                 if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
-                    saveImage(im_LMC,'outs/out4-LMC.png')
-                    saveImage(im_MC,'outs/out4-MC.png')
+                    saveImage(im_LMC,'outsBase/out4-LMC.png')
+                    saveImage(im_MC,'outsBase/out4-MC.png')
                     foundOutput4 = True
                 
             if(foundOutput1 and foundOutput21 and foundOutput22 and foundOutput3 and foundOutput4):
