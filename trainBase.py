@@ -144,7 +144,7 @@ class LMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-
+        x = self.pool1(x) #pooling
         x = self.dropout1(x)
 
         ##3
@@ -246,6 +246,7 @@ class MLMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
+        x = self.pool1(x) #pooling
         x = self.dropout1(x)
 
         ##3

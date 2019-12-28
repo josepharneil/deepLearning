@@ -73,7 +73,7 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            dilation=2,
+            # dilation=2,
             padding = 1
         )
 
@@ -86,7 +86,7 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
-            dilation=2,
+            # dilation=2,
             padding = 1
         )
 
@@ -100,15 +100,15 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             stride = (2,2),  
-            dilation=2,
+            # dilation=2,
             padding = 1
         )
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        # self.fc1 = nn.Linear(in_features=15488,out_features=1024)#no dilation
-        self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation of 2,2,2
+        self.fc1 = nn.Linear(in_features=15488,out_features=1024)#no dilation
+        # self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -124,7 +124,7 @@ class LMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-
+        x = self.pool1(x) #pooling
         x = self.dropout1(x)
 
         ##3
@@ -175,7 +175,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            dilation=2,
+            # dilation=2,
             padding = 1 
         )
 
@@ -188,7 +188,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
-            dilation=2,
+            # dilation=2,
             padding = 1
         )
 
@@ -202,15 +202,15 @@ class MLMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             stride = (2,2),
-            dilation=2,
+            # dilation=2,
             padding = 1
         )
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        # self.fc1 = nn.Linear(in_features=26048,out_features=1024)#no dilation
-        self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation of 2,2,2
+        self.fc1 = nn.Linear(in_features=26048,out_features=1024)#no dilation
+        # self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -226,6 +226,7 @@ class MLMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
+        x = self.pool1(x) #pooling
         x = self.dropout1(x)
 
         ##3
@@ -254,7 +255,6 @@ class MLMC_Net(nn.Module):
         return x
 
 #endregion NetworkClasses
-
 
 
 #Save image function
