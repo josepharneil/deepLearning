@@ -49,9 +49,8 @@ test_loader_MLMC = torch.utils.data.DataLoader(
 
 #endregion data
 
-#Create Network Classes
+# Define the network classes
 #region NetworkClasses
-
 class LMC_Net(nn.Module):
     #Initialisation method
     def __init__(self):
@@ -74,7 +73,8 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
-            padding = 1 
+            dilation=2,
+            padding = 1
         )
 
         self.norm2 = nn.BatchNorm2d(num_features = 32)
@@ -86,6 +86,7 @@ class LMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
+            dilation=2,
             padding = 1
         )
 
@@ -99,14 +100,15 @@ class LMC_Net(nn.Module):
             out_channels = 64,
             kernel_size = (3,3),
             stride = (2,2),  
+            dilation=2,
             padding = 1
         )
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        self.fc1 = nn.Linear(in_features=15488,out_features=1024)
-        #13440
+        # self.fc1 = nn.Linear(in_features=15488,out_features=1024)#no dilation
+        self.fc1 = nn.Linear(in_features=46080,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -122,12 +124,11 @@ class LMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-        x = self.pool1(x) 
+
         x = self.dropout1(x)
 
         ##3
         x = self.conv3(x)
-
         x = self.norm3(x)
         x = F.relu(x)
 
@@ -174,6 +175,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 32,
             kernel_size = (3,3),
+            dilation=2,
             padding = 1 
         )
 
@@ -186,6 +188,7 @@ class MLMC_Net(nn.Module):
             in_channels = 32,
             out_channels = 64,
             kernel_size = (3,3),
+            dilation=2,
             padding = 1
         )
 
@@ -198,14 +201,16 @@ class MLMC_Net(nn.Module):
             in_channels = 64,
             out_channels = 64,
             kernel_size = (3,3),
-            stride = (2,2),  
+            stride = (2,2),
+            dilation=2,
             padding = 1
         )
         
         self.norm4 = nn.BatchNorm2d(num_features = 64)
 
         ##5th layer
-        self.fc1 = nn.Linear(in_features=26048,out_features=1024)
+        # self.fc1 = nn.Linear(in_features=26048,out_features=1024)#no dilation
+        self.fc1 = nn.Linear(in_features=80640,out_features=1024)#dilation of 2,2,2
         
         #6th layer
         self.dropout3 = nn.Dropout(p=0.5)
@@ -221,7 +226,6 @@ class MLMC_Net(nn.Module):
         x = self.conv2(x)
         x = self.norm2(x)
         x = F.relu(x)
-        x = self.pool1(x)   
         x = self.dropout1(x)
 
         ##3
@@ -240,7 +244,6 @@ class MLMC_Net(nn.Module):
         x = torch.flatten(x,start_dim = 1)
 
         ##5
-        # print(x.shape)
         x = self.fc1(x)
         x = torch.sigmoid(x)
         x = self.dropout3(x)
@@ -251,6 +254,7 @@ class MLMC_Net(nn.Module):
         return x
 
 #endregion NetworkClasses
+
 
 
 #Save image function
@@ -266,8 +270,8 @@ def saveImage(inputJ, outputName):
 LMC_model = LMC_Net().to(device)
 MC_model = LMC_Net().to(device)
 
-LMC_model.load_state_dict(torch.load('models/lmc.pt'))
-MC_model.load_state_dict(torch.load('models/mc.pt'))
+LMC_model.load_state_dict(torch.load('modelsBase/lmc.pt'))
+MC_model.load_state_dict(torch.load('modelsBase/mc.pt'))
 
 LMC_model.eval()
 MC_model.eval()
@@ -283,54 +287,66 @@ foundOutput4 = False
 softmax = nn.Softmax(dim=0)
 #for each batch
 for i,(input,target,filenames) in enumerate(test_loader_LMC):
-    #for each image
-    for j in range(0,input.shape[0]):
-        #Get image and target
-        im = input[j].to(device)
-        im.unsqueeze_(0)
-        targ = target[j].to(device)
-        targ.unsqueeze_(0)
+    for i2,(input2,target2,filenames2) in enumerate(test_loader_MC):
+        if(i == i2):
+            #for each image
+            for j in range(0,input.shape[0]):
+                #Get image and target
+                im_LMC = input[j].to(device)
+                im_LMC.unsqueeze_(0)
+                im_MC = input2[j].to(device)
+                im_MC.unsqueeze_(0)
 
-        #Get logits
-        LMC_logits = LMC_model(im)
-        MC_logits  = MC_model(im)
+                targ = target[j].to(device)
+                targ.unsqueeze_(0)
 
-        #Get predictions
-        LMC_prediction = torch.argmax(LMC_logits,dim=-1).to(device)
-        MC_prediction = torch.argmax(MC_logits,dim = -1).to(device)
-        TSCNN_prediction = torch.argmax((softmax(MC_logits)+softmax(LMC_logits)),dim=-1)
+                #Get logits
+                LMC_logits = LMC_model(im_LMC)
+                MC_logits  = MC_model(im_MC)
 
-        #Check if correct
-        LMC_isCorrect = (torch.equal(LMC_prediction, targ))
-        MC_isCorrect = (torch.equal(MC_prediction, targ))
-        TSCNN_isCorrect = (torch.equal(TSCNN_prediction, targ))
+                #Get predictions
+                LMC_prediction = torch.argmax(LMC_logits,dim=-1).to(device)
+                MC_prediction = torch.argmax(MC_logits,dim = -1).to(device)
+                TSCNN_prediction = torch.argmax((softmax(MC_logits)+softmax(LMC_logits)),dim=-1)
 
-        #Output image when appropriate
+                #Check if correct
+                LMC_isCorrect = (torch.equal(LMC_prediction, targ))
+                MC_isCorrect = (torch.equal(MC_prediction, targ))
+                TSCNN_isCorrect = (torch.equal(TSCNN_prediction, targ))
 
-        ###output 1 LMC and MC correct
-        if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
-            saveImage(im,'outs/out1.png')
-            foundOutput1 = True
-        ###output 2.1 LMC correct and MC incorrect
-        if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
-            saveImage(im,'outs/out21.png')
-            foundOutput21 = True
-        ###output 2.2 LMC incorrect and MC correct
-        if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
-            saveImage(im,'outs/out22.png')
-            foundOutput22 = True
-        ###output 3 TSCNN correct, LMC incorrect, MC incorrect
-        if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
-            saveImage(im,'outs/out3.png')
-            foundOutput3 = True
-        ###output 4 all incorrect
-        if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
-            saveImage(im,'outs/out4.png')
-            foundOutput4 = True
-        
-    if(foundOutput1 and foundOutput21 and foundOutput22 and foundOutput3 and foundOutput4):
-        print("found all: breaking")
-        break
+                #Output image when appropriate
+
+                ###output 1 LMC and MC correct
+                if((LMC_isCorrect) and (MC_isCorrect) and (foundOutput1 == False)):
+                    saveImage(im_LMC,'outs/out1-LMC.png')
+                    saveImage(im_MC,'outs/out1-MC.png')
+                    foundOutput1 = True
+                ###output 2.1 LMC correct and MC incorrect
+                if(LMC_isCorrect and (not MC_isCorrect) and (foundOutput21 == False)):
+                    saveImage(im_LMC,'outs/out21-LMC.png')
+                    saveImage(im_MC,'outs/out21-MC.png')
+                    foundOutput21 = True
+                ###output 2.2 LMC incorrect and MC correct
+                if((not LMC_isCorrect) and MC_isCorrect and (foundOutput22 == False)):
+                    saveImage(im_LMC,'outs/out22-LMC.png')
+                    saveImage(im_MC,'outs/out22-MC.png')
+                    foundOutput22 = True
+                ###output 3 TSCNN correct, LMC incorrect, MC incorrect
+                if(TSCNN_isCorrect and (not LMC_isCorrect) and (not MC_isCorrect) and (foundOutput3 == False)):
+                    saveImage(im_LMC,'outs/out3-LMC.png')
+                    saveImage(im_MC,'outs/out3-MC.png')
+                    foundOutput3 = True
+                ###output 4 all incorrect
+                if((not LMC_isCorrect ) and (not MC_isCorrect ) and (not TSCNN_isCorrect) and (foundOutput4 == False)):
+                    saveImage(im_LMC,'outs/out4-LMC.png')
+                    saveImage(im_MC,'outs/out4-MC.png')
+                    foundOutput4 = True
+                
+            if(foundOutput1 and foundOutput21 and foundOutput22 and foundOutput3 and foundOutput4):
+                print("found all: breaking")
+                break
+
+            break
             
 if(foundOutput1 == False):  print("Output 1  not found: No case where both LMC and MC are correct")
 if(foundOutput21 == False): print("Output 21 not found: No case where LMC is correct, and MC is incorrect")
